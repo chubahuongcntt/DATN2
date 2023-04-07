@@ -1,0 +1,210 @@
+﻿@*@model DATN2.Models.Produce
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Produce</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Desciption)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Desciption)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Thumb)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Thumb)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BestSell)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BestSell)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HomeFlag)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HomeFlag)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tag)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tag)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitslnStock)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitslnStock)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Aut)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Aut.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cat.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+*@
+@model DATN2.Models.Produce
+
+@{
+    ViewData["Title"] = "Thông tin sản phẩm" + Model.Name;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <a asp-area="Admin" asp-controller="AdminProduces" asp-action="Index" class="breadcrumb-item">Danh sách sản phẩm</a>
+            <span class="breadcrumb-item active">Thông tin sản phẩm : @Model.Name</span>
+        </nav>
+    </div>
+</div>
+
+<div class="card-body">
+    <h4 class="card-title">Thông tin sản phẩm : @Model.Name</h4>
+    <div class="table-responsive">
+        <table class="product-info-table m-t-20">
+            <tbody>
+                <tr>
+                    <td>Tên sản phẩm:</td>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <td>Mô tả ngắn:</td>
+                    <td>@Model.Desciption</td>
+                </tr>
+                <tr>
+                    <td>Giá:</td>
+                    <td>@Model.Price</td>
+                </tr>
+                <tr>
+                    <td>Discount:</td>
+                    <td>@Model.Discount</td>
+                </tr>
+                <tr>
+                    <td>Trạng thái:</td>
+                    <td>
+                        @if (Model.Active)
+                        {
+                            <div class="switch m-r-10">
+                                <input type="checkbox" id="switch-1" checked="" disabled />
+                                <label for="switch-1"></label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="switch m-r-10">
+                                <input type="checkbox" id="switch-1" disabled />
+                                <label for="switch-1"></label>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>Bestseller:</td>
+                    <td>
+                        @if (Model.BestSell)
+                        {
+                            <div class="switch m-r-10">
+                                <input type="checkbox" id="switch-1" checked="" disabled />
+                                <label for="switch-1"></label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="switch m-r-10">
+                                <input type="checkbox" id="switch-1" disabled />
+                                <label for="switch-1"></label>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>HomeFlag:</td>
+                    <td>
+                        @if (Model.HomeFlag)
+                        {
+                            <div class="switch m-r-10">
+                                <input type="checkbox" id="switch-1" checked="" disabled />
+                                <label for="switch-1"></label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="switch m-r-10">
+                                <input type="checkbox" id="switch-1" disabled />
+                                <label for="switch-1"></label>
+                            </div>
+                        }
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>Danh mục:</td>
+                    <td>@Model.Cat.Name</td>
+                </tr>
+                <tr>
+                    <td>Tác giả:</td>
+                    <td>@Model.Aut.Name</td>
+                </tr>
+                <tr>
+                    <td>Tags:</td>
+                    <td>@Model.Tag</td>
+                </tr>
+                <tr>
+                    <td>Ảnh đại diện:</td>
+                    <td>
+                        <img width="200" height="200" src="~/images/produces/@Model.Thumb" alt="" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

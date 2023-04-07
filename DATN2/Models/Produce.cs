@@ -34,4 +34,5 @@ public partial class Produce
     public virtual Author? Aut { get; set; }
 
     public virtual Category? Cat { get; set; }
+
 }
