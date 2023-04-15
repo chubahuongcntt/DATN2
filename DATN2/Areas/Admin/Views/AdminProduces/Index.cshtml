@@ -22,7 +22,7 @@
                     <div class="col-md-6">
                         <div class="input-affix m-v-10">
                             <i class="prefix-icon anticon anticon-search opacity-04"></i>
-                            <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sách">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -73,7 +73,7 @@
                                 <td>@item.Price</td>
                                 <td>@item.UnitslnStock</td>
                                 <td>
-                                    @if (item.UnitslnStock.Value > 0)
+                                    @if (@item.UnitslnStock > 0)
                                     {
                                         <div class="d-flex align-items-center">
                                             <div class="badge badge-success badge-dot m-r-10"></div>
@@ -137,23 +137,23 @@
                 });
             });
 
-            //$("#keyword").keyup(function () {
-            //    var strkeyword = $('#keyword').val();
-            //    $.ajax({
-            //        url: '/Admin/Search/FindProduct/',
-            //        datatype: "json",
-            //        type: "POST",
-            //        data: { keyword: strkeyword },
-            //        async: true,
-            //        success: function (results) {
-            //            $("#records_table").html("");
-            //            $("#records_table").html(results);
-            //        },
-            //        error: function (xhr) {
-            //            alert('error');
-            //        }
-            //    });
-            //});
+            $("#keyword").keyup(function () {
+                var strkeyword = $('#keyword').val();
+                $.ajax({
+                    url: '/Admin/Search/FindProduce/',
+                    datatype: "json",
+                    type: "POST",
+                    data: { keyword: strkeyword },
+                    async: true,
+                    success: function (results) {
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
         });
     </script>
 

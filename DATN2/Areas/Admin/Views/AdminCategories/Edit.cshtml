@@ -1,0 +1,79 @@
+﻿@model DATN2.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <a asp-area="Admin" asp-controller="AdminCategories" asp-action="Index" class="breadcrumb-item">Danh sách danh mục</a>
+            <span class="breadcrumb-item active">Chỉnh sửa danh mục</span>
+        </nav>
+    </div>
+</div>
+<h1>Sửa</h1>
+
+<h4>Danh mục</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="AdminCategories" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Thums" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentId" class="control-label"></label>
+                <input asp-for="ParentId" class="form-control" />
+                <span asp-validation-for="ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Levels" class="control-label"></label>
+                <input asp-for="Levels" class="form-control" />
+                <span asp-validation-for="Levels" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Odering" class="control-label"></label>
+                <input asp-for="Odering" class="form-control" />
+                <span asp-validation-for="Odering" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
+                <input name="fThums" type="file" class="form-control-file" asp-for="Thums" />
+                <span asp-validation-for="Thums" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cover" class="control-label"></label>
+                <input asp-for="Cover" class="form-control" />
+                <span asp-validation-for="Cover" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu lại" class="btn btn-primary" /> |
+                <a asp-action="Index" class="btn btn-danger">Về danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

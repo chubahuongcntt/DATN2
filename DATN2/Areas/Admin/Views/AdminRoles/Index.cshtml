@@ -4,7 +4,14 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item active">Quyền truy cập</span>
+        </nav>
+    </div>
+</div>
 <h1>Quyền truy cập</h1>
 
 <p>
@@ -13,15 +20,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Tên quyền
-            </th>
-            <th>
-                Mô tả
-            </th>
-            <th>
-                Tùy chọn
-            </th>
+            <th>Tên quyền</th>
+            <th>Mô tả</th>
+            <th>Tùy chọn</th>
         </tr>
     </thead>
     <tbody>

@@ -1,0 +1,44 @@
+﻿@model List<Produce>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @item.Id
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <img width="50" height="50" src="~/images/produces/@item.Thumb" alt="@item.Name" />
+                    <h6 class="m-b-0 m-l-10">@item.Name</h6>
+                </div>
+            </td>
+            <td>@item.CatId</td>
+            <td>@item.Price</td>
+            <td>@item.UnitslnStock</td>
+            <td>
+                @if (item.UnitslnStock.Value > 0)
+                {
+                    <div class="d-flex align-items-center">
+                        <div class="badge badge-success badge-dot m-r-10"></div>
+                        <div>Còn hàng</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center">
+                        <div class="badge badge-success badge-dot m-r-10"></div>
+                        <div>Hết hàng</div>
+                    </div>
+                }
+
+            <td>
+                <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminProduces" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
+                <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminProduces" asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                <a class="btn btn-success btn-tone m-r-5" asp-area="Admin" asp-controller="AdminProduces" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+
+            </td>
+        </tr>
+    }
+}

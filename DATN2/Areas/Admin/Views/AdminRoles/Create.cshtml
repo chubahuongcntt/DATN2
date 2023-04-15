@@ -4,7 +4,15 @@
     ViewData["Title"] = "Create";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Quyền truy cập</a>
+            <span class="breadcrumb-item active">Thêm mới quyền truy cập</span>
+        </nav>
+    </div>
+</div>
 <h1>Thêm mới</h1>
 
 <h4>Quyền truy cập</h4>
