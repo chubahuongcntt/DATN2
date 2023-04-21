@@ -25,7 +25,7 @@ namespace DATN2.Areas.Admin.Controllers
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = 5;
+            var pageSize = 10;
             var lsAuthor = _context.Authors
                 .AsNoTracking()
                 .OrderByDescending(x => x.Id);

@@ -19,7 +19,7 @@ namespace DATN2.Areas.Admin.Controllers
             List<Produce> ls = new List<Produce>();
             if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
             {
-                return PartialView("ListProducesSearchPartial", null);
+                return RedirectToAction(nameof(Index));
             }
             ls = _context.Produces.AsNoTracking()
                                   .Include(a => a.Cat)
@@ -34,6 +34,27 @@ namespace DATN2.Areas.Admin.Controllers
             else
             {
                 return PartialView("ListProducesSearchPartial", ls);
+            }
+        }
+        public IActionResult FindAuthor(string keyword)
+        {
+            List<Author> ls = new List<Author>();
+            if (string.IsNullOrEmpty(keyword) || keyword.Length < 1)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            ls = _context.Authors.AsNoTracking()
+                                  .Where(x => x.Name.Contains(keyword))
+                                  .OrderByDescending(x => x.Name)
+                                  .Take(10)
+                                  .ToList();
+            if (ls == null)
+            {
+                return PartialView("ListAuthorSearchPartial", null);
+            }
+            else
+            {
+                return PartialView("ListAuthorSearchPartial", ls);
             }
         }
 

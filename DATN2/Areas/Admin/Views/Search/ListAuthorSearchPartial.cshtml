@@ -1,0 +1,16 @@
+﻿@model List<Author>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td><p>@item.Name</p></td>
+            <td>@item.Address</td>
+            <td>
+                <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminAuthors" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
+                <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminAuthors" asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                <a class="btn btn-success btn-tone m-r-5" asp-area="Admin" asp-controller="AdminAuthors" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+    }
+}

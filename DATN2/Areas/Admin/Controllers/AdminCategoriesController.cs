@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using PagedList.Core;
 using WebShop.Helpper;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace DATN2.Areas.Admin.Controllers
 {
@@ -15,10 +16,11 @@ namespace DATN2.Areas.Admin.Controllers
     public class AdminCategoriesController : Controller
     {
         private readonly BookStore2Context _context;
-
-        public AdminCategoriesController(BookStore2Context context)
+        public INotyfService _notyfService { get; }
+        public AdminCategoriesController(BookStore2Context context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/AdminCategories
@@ -64,7 +66,7 @@ namespace DATN2.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,ParentId,Levels,Odering,Published,Thums,Title,Cover")] Category category, Microsoft.AspNetCore.Http.IFormFile fThums)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,ParentId,Levels,Odering,Published,Thums,Title,Cover,Alias")] Category category, Microsoft.AspNetCore.Http.IFormFile fThums)
         {
             if (ModelState.IsValid)
             {
@@ -76,9 +78,10 @@ namespace DATN2.Areas.Admin.Controllers
                     category.Thums = await Utilities.UploadFile(fThums, @"category", image.ToLower());
                 }
                 if (string.IsNullOrEmpty(category.Thums)) category.Thums = "default.jpg";
-       
+                category.Alias = Utilities.SEOUrl(category.Name);
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+                _notyfService.Success("Thêm mới thành công");
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -105,7 +108,7 @@ namespace DATN2.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ParentId,Levels,Odering,Published,Thums,Title,Cover")] Category category, Microsoft.AspNetCore.Http.IFormFile fThums)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ParentId,Levels,Odering,Published,Thums,Title,Cover,Alias")] Category category, Microsoft.AspNetCore.Http.IFormFile fThums)
         {
             if (id != category.Id)
             {
@@ -123,9 +126,10 @@ namespace DATN2.Areas.Admin.Controllers
                         category.Thums = await Utilities.UploadFile(fThums, @"category", image.ToLower());
                     }
                     if (string.IsNullOrEmpty(category.Thums)) category.Thums = "default.jpg";
-
+                    category.Alias = Utilities.SEOUrl(category.Name);
                     _context.Update(category);
                     await _context.SaveChangesAsync();
+                    _notyfService.Success("Cập nhật thành công");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -177,6 +181,7 @@ namespace DATN2.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using PagedList.Core;
 using WebShop.Helpper;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace DATN2.Areas.Admin.Controllers
 {
@@ -15,10 +16,11 @@ namespace DATN2.Areas.Admin.Controllers
     public class AdminProducesController : Controller
     {
         private readonly BookStore2Context _context;
-
-        public AdminProducesController(BookStore2Context context)
+        public INotyfService _notyfService { get; }
+        public AdminProducesController(BookStore2Context context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/AdminProduces
@@ -34,14 +36,14 @@ namespace DATN2.Areas.Admin.Controllers
                 .AsNoTracking()
                 .Where(x => x.CatId == CatID)
                 .Include(x => x.Cat)
-                .OrderBy(x => x.Id).ToList();
+                .OrderBy(x => x.Name).ToList();
             }
             else
             {
                 lsproduces = _context.Produces
                 .AsNoTracking()
                 .Include(x => x.Cat)
-                .OrderBy(x => x.Id).ToList();
+                .OrderBy(x => x.Name).ToList();
             }
 
 
@@ -97,26 +99,35 @@ namespace DATN2.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Create([Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock,Datecreate,Alias,NhaXB")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
-            if (ModelState.IsValid)
+            try
             {
-                produce.Name = Utilities.ToTitleCase(produce.Name);
-                if (fThumb != null)
+                if (ModelState.IsValid)
                 {
-                    string extension = Path.GetExtension(fThumb.FileName);
-                    string image = Utilities.SEOUrl(produce.Name) + extension;
-                    produce.Thumb = await Utilities.UploadFile(fThumb, @"produces", image.ToLower());
+                    produce.Name = Utilities.ToTitleCase(produce.Name);
+                    if (fThumb != null)
+                    {
+                        string extension = Path.GetExtension(fThumb.FileName);
+                        string image = Utilities.SEOUrl(produce.Name) + extension;
+                        produce.Thumb = await Utilities.UploadFile(fThumb, @"produces", image.ToLower());
+                    }
+                    if (string.IsNullOrEmpty(produce.Thumb)) produce.Thumb = "default.jpg";
+                    produce.Alias = Utilities.SEOUrl(produce.Name);
+                    produce.Datecreate = DateTime.Now;
+                    _context.Add(produce);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm mới thành công");
+                    return RedirectToAction(nameof(Index));
                 }
-                if (string.IsNullOrEmpty(produce.Thumb)) produce.Thumb = "default.jpg";
-
-                _context.Add(produce);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["AutId"] = new SelectList(_context.Authors, "Id", "Name", produce.AutId);
+                ViewData["CatId"] = new SelectList(_context.Categories, "Id", "Name", produce.CatId);
+                return View(produce);
             }
-            ViewData["AutId"] = new SelectList(_context.Authors, "Id", "Name", produce.AutId);
-            ViewData["CatId"] = new SelectList(_context.Categories, "Id", "Name", produce.CatId);
-            return View(produce);
+            catch(Exception ex)
+            {
+                return RedirectToAction(nameof(Create));
+            }
         }
 
         // GET: Admin/AdminProduces/Edit/5
@@ -142,7 +153,7 @@ namespace DATN2.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock,Datecreate,Alias,NhaXB")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
             if (id != produce.Id)
             {
@@ -161,9 +172,10 @@ namespace DATN2.Areas.Admin.Controllers
                         produce.Thumb = await Utilities.UploadFile(fThumb, @"produces", image.ToLower());
                     }
                     if (string.IsNullOrEmpty(produce.Thumb)) produce.Thumb = "default.jpg";
-
+                    produce.Alias = Utilities.SEOUrl(produce.Name);
 
                     _context.Update(produce);
+                    _notyfService.Success("Cập nhật thành công");
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -220,6 +232,7 @@ namespace DATN2.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

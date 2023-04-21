@@ -25,5 +25,7 @@ public partial class Category
 
     public string? Cover { get; set; }
 
+    public string? Alias { get; set; }
+
     public virtual ICollection<Produce> Produces { get; } = new List<Produce>();
 }

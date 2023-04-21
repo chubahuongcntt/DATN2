@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Build.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace DATN2.Models;
@@ -30,6 +31,12 @@ public partial class Produce
     public string? Tag { get; set; }
 
     public int? UnitslnStock { get; set; }
+
+    public DateTime? Datecreate { get; set; }
+
+    public string? Alias { get; set; }
+
+    public string? NhaXB { get; set; }
 
     public virtual Author? Aut { get; set; }
 
