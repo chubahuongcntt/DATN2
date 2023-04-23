@@ -18,10 +18,10 @@ namespace DATN2.Controllers
             {
                 var pageNumber = page == null || page <= 0 ? 1 : page.Value;
                 var pageSize = 10;
-                var lsTinDangs = _context.Produces
+                var lsproduces = _context.Produces
                     .AsNoTracking()
                     .OrderBy(x => x.Name);
-                PagedList<Produce> models = new PagedList<Produce>(lsTinDangs, pageNumber, pageSize);
+                PagedList<Produce> models = new PagedList<Produce>(lsproduces, pageNumber, pageSize);
 
                 ViewBag.CurrentPage = pageNumber;
                 return View(models);
@@ -30,9 +30,8 @@ namespace DATN2.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
-
         }
+
         [Route("danhmuc/{Alias}", Name = ("ListProduce"))]
         public IActionResult List(string Alias, int page = 1)
         {
