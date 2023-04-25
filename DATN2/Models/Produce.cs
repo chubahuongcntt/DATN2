@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN2.Models;
 
@@ -8,8 +9,10 @@ public partial class Produce
 {
     public int Id { get; set; }
 
+    [MaxLength(100, ErrorMessage = "Tên sách không quá 100 kí tự")]
     public string Name { get; set; } = null!;
 
+    [MaxLength(500, ErrorMessage = "Mô tả không quá 500 kí tự")]
     public string? Desciption { get; set; }
 
     public int? CatId { get; set; }

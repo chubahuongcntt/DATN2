@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DATN2.Models;
 
@@ -7,6 +8,7 @@ public partial class Category
 {
     public int Id { get; set; }
 
+    [MaxLength(100, ErrorMessage = "Tên danh mục không quá 100 kí tự")]
     public string? Name { get; set; }
 
     public string? Description { get; set; }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using PagedList.Core;
-using WebShop.Helpper;
+using DATN2.Helpper;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace DATN2.Areas.Admin.Controllers
@@ -68,23 +68,30 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,ParentId,Levels,Odering,Published,Thums,Title,Cover,Alias")] Category category, Microsoft.AspNetCore.Http.IFormFile fThums)
         {
-            if (ModelState.IsValid)
+            try
             {
-                category.Name = Utilities.ToTitleCase(category.Name);
-                if (fThums != null)
+                if (ModelState.IsValid)
                 {
-                    string extension = Path.GetExtension(fThums.FileName);
-                    string image = Utilities.SEOUrl(category.Name) + extension;
-                    category.Thums = await Utilities.UploadFile(fThums, @"category", image.ToLower());
+                    category.Name = Utilities.ToTitleCase(category.Name);
+                    if (fThums != null)
+                    {
+                        string extension = Path.GetExtension(fThums.FileName);
+                        string image = Utilities.SEOUrl(category.Name) + extension;
+                        category.Thums = await Utilities.UploadFile(fThums, @"category", image.ToLower());
+                    }
+                    if (string.IsNullOrEmpty(category.Thums)) category.Thums = "default.jpg";
+                    category.Alias = Utilities.SEOUrl(category.Name);
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm mới thành công");
+                    return RedirectToAction(nameof(Index));
                 }
-                if (string.IsNullOrEmpty(category.Thums)) category.Thums = "default.jpg";
-                category.Alias = Utilities.SEOUrl(category.Name);
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                _notyfService.Success("Thêm mới thành công");
-                return RedirectToAction(nameof(Index));
+                return View(category);
             }
-            return View(category);
+            catch
+            {
+                return View(category);
+            }
         }
 
         // GET: Admin/AdminCategories/Edit/5
@@ -133,6 +140,7 @@ namespace DATN2.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    
                     if (!CategoryExists(category.Id))
                     {
                         return NotFound();

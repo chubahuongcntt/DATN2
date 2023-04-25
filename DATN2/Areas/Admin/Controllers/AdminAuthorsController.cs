@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using PagedList.Core;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace DATN2.Areas.Admin.Controllers
 {
@@ -14,10 +15,11 @@ namespace DATN2.Areas.Admin.Controllers
     public class AdminAuthorsController : Controller
     {
         private readonly BookStore2Context _context;
-
-        public AdminAuthorsController(BookStore2Context context)
+        public INotyfService _notyfService { get; }
+        public AdminAuthorsController(BookStore2Context context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/AdminAuthors
@@ -65,13 +67,23 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Address,Story")] Author author)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(author);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(author);
+                    await _context.SaveChangesAsync();
+                    _notyfService.Success("Thêm tác giả thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                _notyfService.Error("Thêm tác giả không thành công");
+                return View(author);
             }
-            return View(author);
+            catch
+            {
+                _notyfService.Error("Thêm tác giả không thành công");
+                return View(author);
+            }
         }
 
         // GET: Admin/AdminAuthors/Edit/5
@@ -108,9 +120,11 @@ namespace DATN2.Areas.Admin.Controllers
                 {
                     _context.Update(author);
                     await _context.SaveChangesAsync();
+                    _notyfService.Success("Sửa tác giả thành công");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    _notyfService.Error("Sửa tác giả không thành công");
                     if (!AuthorExists(author.Id))
                     {
                         return NotFound();
@@ -119,6 +133,7 @@ namespace DATN2.Areas.Admin.Controllers
                     {
                         throw;
                     }
+
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -159,6 +174,7 @@ namespace DATN2.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa tác giả thành công");
             return RedirectToAction(nameof(Index));
         }
 

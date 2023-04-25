@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using PagedList.Core;
-using WebShop.Helpper;
+using DATN2.Helpper;
 using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace DATN2.Areas.Admin.Controllers

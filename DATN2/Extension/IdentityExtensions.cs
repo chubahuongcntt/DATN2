@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace WebShop.Extension
+namespace DATN2.Extension
 {
     public static class IdentityExtensions
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using DATN2.ModelViews;
 
 namespace DATN2.Models;
 
@@ -274,4 +275,8 @@ public partial class BookStore2Context : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    public DbSet<DATN2.ModelViews.RegisterViewModel>? RegisterViewModel { get; set; }
+
+    public DbSet<DATN2.ModelViews.LoginViewModel>? LoginViewModel { get; set; }
 }

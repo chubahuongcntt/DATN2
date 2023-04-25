@@ -1,5 +1,6 @@
 using AspNetCoreHero.ToastNotification;
 using DATN2.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,17 @@ builder.Services.AddNotyf(config =>
     config.IsDismissable = true;
     config.Position = NotyfPosition.TopRight;
 });
+builder.Services.AddMvc().AddSessionStateTempDataProvider();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(p =>
+                {
+                    //p.Cookie.Name = "UserLoginCookie";
+                    //p.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    p.LoginPath = "/dang-nhap.html";
+                    p.LogoutPath = "/dang-xuat/html";
+                    //p.AccessDeniedPath = "/not-found.html";
+                });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,9 +37,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

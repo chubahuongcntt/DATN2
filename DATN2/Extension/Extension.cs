@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace WebShop.Extension
+namespace DATN2.Extension
 {
     public static class Extension
     {

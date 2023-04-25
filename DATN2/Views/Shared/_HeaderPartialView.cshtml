@@ -10,26 +10,23 @@
                         </a>
                         <div class="header-search-area d-none d-lg-block">
                             <form class="header-searchbox">
-                                    <input id="keyword" name="keyword" class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
-                                    <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
-                                </form>
-                                <div id="records_table" class="results-box">
-
-                                </div>
+                                <input id="keyword" name="keyword" class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
+                                <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
+                            </form>
+                            <div id="records_table" class="results-box">
+                            </div>
 
                             @*<div>
-                                    <i class="prefix-icon anticon anticon-search opacity-04"></i>
-                                    <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-hover e-commerce-table">
-                                        <tbody id="records_table">
+                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
+                                <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            </div>*@
+                            <div class="table-responsive">
+                                <table class="table table-hover e-commerce-table">
+                                    <tbody id="records_table">
+                                    </tbody>
 
-                                        </tbody>
-
-                                    </table>
-                                </div>*@
-
+                                </table>
+                            </div>
                         </div>
                         <div class="header-right">
                             <ul>
@@ -37,7 +34,7 @@
                                     <button class="btn btn-link dropdown-toggle ht-btn p-0" type="button" id="settingButton" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="pe-7s-users"></i>
                                     </button>
-                                    @*<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingButton">
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="settingButton">
                                         @if (User.Identity.IsAuthenticated)
                                         {
                                             <li><a class="dropdown-item" href="/tai-khoan-cua-toi.html">Tài khoản của tôi</a></li>
@@ -48,7 +45,7 @@
                                             <li><a class="dropdown-item" href="/dang-ky.html">Đăng ký tài khoản</a></li>
                                             <li><a class="dropdown-item" href="/dang-nhap.html">Đăng nhập</a></li>
                                         }
-                                    </ul>*@
+                                    </ul>
                                 </li>
                                 <li class="d-none d-md-block">
                                     <a href="#">
@@ -432,7 +429,7 @@
 
 @section Scripts{
     @*<script>*@
-        @*$(document).ready(function () {
+    @*$(document).ready(function () {
             $("#keyword").keyup(function () {
             var strkeyword = $('#keyword').val();
             $.ajax({
