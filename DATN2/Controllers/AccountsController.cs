@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using DATN2.Helpper;
 using DATN2.Extension;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DATN2.Controllers
 {
@@ -219,7 +220,6 @@ namespace DATN2.Controllers
             HttpContext.Session.Remove("CustomerId");
             return RedirectToAction("Index", "Home");
         }
-
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel model)
         {

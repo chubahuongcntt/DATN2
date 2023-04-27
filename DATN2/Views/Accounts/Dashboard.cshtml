@@ -37,6 +37,9 @@
                             <a class="nav-link" id="account-orders-tab" data-bs-toggle="tab" href="#account-orders" role="tab" aria-controls="account-orders" aria-selected="false">Danh sách đơn hàng</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" id="account-details-tab" data-bs-toggle="tab" href="#account-name" role="tab" aria-controls="account-name" aria-selected="false">Thay đổi thông tin tài khoản</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="account-details-tab" data-bs-toggle="tab" href="#account-details" role="tab" aria-controls="account-details" aria-selected="false">Thay đổi mật khẩu</a>
                         </li>
                         <li class="nav-item">
@@ -51,75 +54,17 @@
                                 <p>
                                     Xin chào, <b>@Model.Name</b>
                                 </p>
+                                <p>Địa chỉ: @Model.BirthDay</p>
                                 <p>Email: @Model.Email</p>
                                 <p>Số điện thoại: @Model.Phone</p>
                                 <p>Địa chỉ: @Model.Address</p>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
-                            <div class="myaccount-orders">
-                                <h4 class="small-title">DANH SÁCH ĐƠN HÀNG</h4>
-                                @*@if (DanhSachDonHang != null && DanhSachDonHang.Count() > 0)
-                                {
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover">
-                                            <tbody>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Ngày mua hàng</th>
-                                                    <th>Ngày ship hàng</th>
-                                                    <th>Trạng thái</th>
-                                                </tr>
-                                                @foreach (var item in DanhSachDonHang)
-                                                {
-                                                    <tr>
-                                                        <td><a class="account-order-id" href="javascript:void(0)">#@item.OrderId</a></td>
-                                                        <td>@item.OrderDate</td>
-                                                        <td>@item.ShipDate</td>
-                                                        <td>@item.TransactStatus.Status</td>
-                                                        <td>
-                                                            <a href="javascript:void(0)" class="xemdonhang" data-madonhang="@item.OrderId">Xem đơn hàng</a>
-                                                        </td>
-                                                    </tr>
-                                                }
-
-
-                                            </tbody>
-                                        </table>
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <hr />
-                                        <div id="records_table">
-
-                                        </div>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <p>Chưa có đơn hàng!</p>
-                                }*@
-                            </div>
+                            @*@await Html.PartialAsync("_DonhangPartialView", changePassword)*@
                         </div>
-                        <div class="tab-pane fade" id="account-address" role="tabpanel" aria-labelledby="account-address-tab">
-                            <div class="myaccount-address">
-                                <p>The following addresses will be used on the checkout page by default.</p>
-                                <div class="row">
-                                    <div class="col">
-                                        <h4 class="small-title"> ADDRESS</h4>
-                                        <address>
-                                            @Model.Address
-                                        </address>
-                                    </div>
-                                    <div class="col">
-                                        <h4 class="small-title">SHIPPING ADDRESS</h4>
-                                        <address>
-                                            @Model.Address
-                                        </address>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tab-pane fade" id="account-name" role="tabpanel" aria-labelledby="account-name-tab">
+                            @*@await Html.PartialAsync("_ChangeAccountsPartialView", changeAccounts)*@
                         </div>
                         <div class="tab-pane fade" id="account-details" role="tabpanel" aria-labelledby="account-details-tab">
                             @await Html.PartialAsync("_ChangePasswordPartialView", changePassword)

@@ -380,7 +380,7 @@
     </div>
 </main>
 <!-- Main Content Area End Here  -->
-@*@section Scripts{
+@section Scripts{
     <script>
         $(document).ready(function () {
             $(function () {
@@ -411,25 +411,25 @@
                     });
                 });
 
-        $(".removecart").click(function () {
-                var Id = $(this).attr("data-Id");
-                $.ajax({
-                url: "api/cart/remove",
-                type: "POST",
-                dataType: "JSON",
-                data: { Id: Id },
-                success: function (result) {
-                if (result.success) {
-                loadHeaderCart();Reload lai gio hang
-                location.reload();
-                }
-                },
-                error: function (rs) {
-                alert("Remove Cart Error !")
-                }
+                $(".removecart").click(function () {
+                    var Id = $(this).attr("data-Id");
+                    $.ajax({
+                        url: "api/cart/remove",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { Id: Id },
+                        success: function (result) {
+                            if (result.success) {
+                                loadHeaderCart(); //Reload lai gio hang
+                                location.reload();
+                            }
+                        },
+                        error: function (rs) {
+                            alert("Remove Cart Error !")
+                        }
+                    });
                 });
-                });
-                });
+            });
             function loadHeaderCart() {
                 $('#miniCart').load("/AjaxContent/HeaderCart");
                 $('#numberCart').load("/AjaxContent/NumberCart");
@@ -437,4 +437,4 @@
         });
     </script>
 
-}*@
+}
