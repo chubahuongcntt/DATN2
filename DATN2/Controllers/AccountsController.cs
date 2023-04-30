@@ -159,8 +159,10 @@ namespace DATN2.Controllers
         {
             try
             {
+                Console.WriteLine("112233");
                 if (ModelState.IsValid)
                 {
+                    Console.WriteLine("112233");
                     bool isEmail = Utilities.IsValidEmail(customer.UserName);
                     if (!isEmail) return View(customer);
 
@@ -204,10 +206,10 @@ namespace DATN2.Controllers
                     //    return Redirect(returnUrl);
                     //}
                 }
-                else Console.WriteLine("123456");
             }
             catch
             {
+                Console.WriteLine("112233");
                 return RedirectToAction("DangkyTaiKhoan", "Accounts");
             }
             return View(customer);

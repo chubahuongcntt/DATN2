@@ -46,6 +46,7 @@ namespace DATN2.Controllers
                 model.Phone = khachhang.Phone;
                 model.Address = khachhang.Address;
             }
+            ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Level == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
             ViewBag.GioHang = cart;
             return View(model);
         }
@@ -58,8 +59,10 @@ namespace DATN2.Controllers
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             MuaHangVM model = new MuaHangVM();
+            Console.WriteLine("1");
             if (taikhoanID != null)
             {
+                Console.WriteLine("2");
                 var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(taikhoanID));
                 model.CustomerId = khachhang.Id;
                 model.FullName = khachhang.Name;
@@ -76,8 +79,10 @@ namespace DATN2.Controllers
             }
             try
             {
+                Console.WriteLine("3");
                 if (ModelState.IsValid)
                 {
+                    Console.WriteLine("4");
                     //Khoi tao don hang
                     Order donhang = new Order();
                     donhang.CustomerId = model.CustomerId;
@@ -87,7 +92,7 @@ namespace DATN2.Controllers
                     donhang.Ward = model.PhuongXa;
 
                     donhang.OrderDate = DateTime.Now;
-                    donhang.TransactStatusId = 1;//Don hang moi
+                    donhang.StatusId = 1;//Don hang moi
                     donhang.Deleted = false;
                     donhang.Paid = false;
                     donhang.Note = Utilities.StripHTML(model.Note);
@@ -98,12 +103,21 @@ namespace DATN2.Controllers
 
                     foreach (var item in cart)
                     {
+                        foreach (var sanpham in _context.Produces)
+                        {
+                            if (item.produce.Id == sanpham.Id)
+                            {
+                                sanpham.UnitslnStock -= item.amount;
+                                _context.Produces.Update(sanpham);
+                            }
+                        }
                         OrderDetail orderDetail = new OrderDetail();
-                        orderDetail.OrderId = donhang.OrderId;
-                        orderDetail.ProductId = item.product.ProductId;
+                        orderDetail.OrderId = donhang.Id;
+                        orderDetail.ProduceId = item.produce.Id;
                         orderDetail.Amount = item.amount;
                         orderDetail.TotalMoney = donhang.TotalMoney;
-                        orderDetail.Price = item.product.Price;
+                        orderDetail.Quantity = item.amount;
+                        orderDetail.Price = item.produce.Price;
                         orderDetail.CreateDate = DateTime.Now;
                         _context.Add(orderDetail);
                     }
@@ -120,11 +134,13 @@ namespace DATN2.Controllers
             }
             catch
             {
-                ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
+                Console.WriteLine("5");
+                ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Level == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
                 ViewBag.GioHang = cart;
                 return View(model);
             }
-            ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
+            Console.WriteLine("6");
+            ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Level == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
             ViewBag.GioHang = cart;
             return View(model);
         }
@@ -138,14 +154,14 @@ namespace DATN2.Controllers
                 {
                     return RedirectToAction("Login", "Accounts", new { returnUrl = "/dat-hang-thanh-cong.html" });
                 }
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.CustomerId == Convert.ToInt32(taikhoanID));
+                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(taikhoanID));
                 var donhang = _context.Orders
                     .Where(x => x.CustomerId == Convert.ToInt32(taikhoanID))
                     .OrderByDescending(x => x.OrderDate)
                     .FirstOrDefault();
                 MuaHangSuccessVM successVM = new MuaHangSuccessVM();
-                successVM.FullName = khachhang.FullName;
-                successVM.DonHangID = donhang.OrderId;
+                successVM.FullName = khachhang.Name;
+                successVM.DonHangID = donhang.Id;
                 successVM.Phone = khachhang.Phone;
                 successVM.Address = khachhang.Address;
                 successVM.PhuongXa = GetNameLocation(donhang.Ward.Value);
@@ -161,7 +177,7 @@ namespace DATN2.Controllers
         {
             try
             {
-                var location = _context.Locations.AsNoTracking().SingleOrDefault(x => x.LocationId == idlocation);
+                var location = _context.Locations.AsNoTracking().SingleOrDefault(x => x.Id == idlocation);
                 if (location != null)
                 {
                     return location.NameWithType;

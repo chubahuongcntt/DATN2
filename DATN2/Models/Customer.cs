@@ -29,5 +29,11 @@ public partial class Customer
 
     public bool Active { get; set; }
 
+    public int? LocationId { get; set; }
+
+    public int? District { get; set; }
+
+    public int? Ward { get; set; }
+
     public virtual ICollection<Order> Orders { get; } = new List<Order>();
 }

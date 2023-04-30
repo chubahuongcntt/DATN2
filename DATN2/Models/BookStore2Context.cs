@@ -24,6 +24,8 @@ public partial class BookStore2Context : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Location> Locations { get; set; }
+
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -158,6 +160,17 @@ public partial class BookStore2Context : DbContext
                 .HasColumnName("satl");
         });
 
+        modelBuilder.Entity<Location>(entity =>
+        {
+            entity.ToTable("location");
+
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.NameWithType).HasMaxLength(50);
+            entity.Property(e => e.PathWithType).HasMaxLength(50);
+            entity.Property(e => e.Slug).HasMaxLength(50);
+            entity.Property(e => e.Type).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<Order>(entity =>
         {
             entity.ToTable("order");
@@ -208,6 +221,8 @@ public partial class BookStore2Context : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK_orderDetail_order");
+
+
         });
 
         modelBuilder.Entity<Produce>(entity =>

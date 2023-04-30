@@ -2,18 +2,24 @@
 
 namespace DATN2.ModelViews
 {
-    public class LoginViewModel
+    public class MuaHangVM
     {
-        [Key]
-        [MaxLength(100)]
-        [Required(ErrorMessage = ("Vui lòng nhập Email"))]
-        [Display(Name = "Địa chỉ Email")]
-        [EmailAddress(ErrorMessage = "Sai định dạng Email")]
-        public string UserName { get; set; }
+        public int CustomerId { get; set; }
 
-        [Display(Name = "Mật khẩu")]
-        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [MinLength(5, ErrorMessage = "Bạn cần đặt mật khẩu tối thiểu 5 ký tự")]
-        public string Password { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập Họ và Tên")]
+        public string? FullName { get; set; }
+        public string? Email { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
+        public string? Phone { get; set; }
+        [Required(ErrorMessage = "Địa chỉ nhận hàng")]
+        public string? Address { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn Tỉnh/Thành")]
+        public int TinhThanh { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn Quận/Huyện")]
+        public int QuanHuyen { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn Phường/Xã")]
+        public int PhuongXa { get; set; }
+        public int PaymentID { get; set; }
+        public string? Note { get; set; }
     }
 }

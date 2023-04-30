@@ -61,7 +61,49 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
-                            @*@await Html.PartialAsync("_DonhangPartialView", changePassword)*@
+                            <div class="myaccount-orders">
+                                <h4 class="small-title">DANH SÁCH ĐƠN HÀNG</h4>
+                                @if (DanhSachDonHang != null && DanhSachDonHang.Count() > 0)
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Ngày mua hàng</th>
+                                                    <th>Ngày ship hàng</th>
+                                                    <th>Trạng thái</th>
+                                                </tr>
+                                                @foreach (var item in DanhSachDonHang)
+                                                {
+                                                    <tr>
+                                                        <td><a class="account-order-id" href="javascript:void(0)">#@item.Id</a></td>
+                                                        <td>@item.OrderDate</td>
+                                                        <td>@item.ShipDate</td>
+                                                        <td>@item.Status.Status</td>
+                                                        <td>
+                                                            <a href="javascript:void(0)" class="xemdonhang" data-madonhang="@item.Id">Xem đơn hàng</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <hr />
+                                        <div id="records_table">
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p>Chưa có đơn hàng!</p>
+                                }
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="account-name" role="tabpanel" aria-labelledby="account-name-tab">
                             @*@await Html.PartialAsync("_ChangeAccountsPartialView", changeAccounts)*@
@@ -77,24 +119,24 @@
 </main>
 @section Scripts{
 <script>
-    //$(document).ready(function () {
-    //    $(".xemdonhang").click(function () {
-    //        var madonhang = $(this).attr("data-madonhang")
-    //        $.ajax({
-    //            url: '/DonHang/Details',
-    //            datatype: "json",
-    //            type: "POST",
-    //            data: { id: madonhang },
-    //            async: true,
-    //            success: function (results) {
-    //                $("#records_table").html("");
-    //                $("#records_table").html(results);
-    //            },
-    //            error: function (xhr) {
-    //                alert('error');
-    //            }
-    //        });
-    //    });
-    //});
+    $(document).ready(function () {
+        $(".xemdonhang").click(function () {
+            var madonhang = $(this).attr("data-madonhang")
+            $.ajax({
+                url: '/DonHang/Details',
+                datatype: "json",
+                type: "POST",
+                data: { id: madonhang },
+                async: true,
+                success: function (results) {
+                    $("#records_table").html("");
+                    $("#records_table").html(results);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        });
+    });
 </script>
 }
