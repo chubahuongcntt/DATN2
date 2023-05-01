@@ -115,9 +115,9 @@ namespace DATN2.Controllers
                         orderDetail.OrderId = donhang.Id;
                         orderDetail.ProduceId = item.produce.Id;
                         orderDetail.Amount = item.amount;
-                        orderDetail.TotalMoney = donhang.TotalMoney;
                         orderDetail.Quantity = item.amount;
-                        orderDetail.Price = item.produce.Price;
+                        orderDetail.Price = item.produce.Discount;
+                        orderDetail.TotalMoney = (int?)item.TotalMoney;
                         orderDetail.CreateDate = DateTime.Now;
                         _context.Add(orderDetail);
                     }

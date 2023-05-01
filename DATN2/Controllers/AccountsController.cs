@@ -67,7 +67,7 @@ namespace DATN2.Controllers
                     var lsDonHang = _context.Orders
                         .Include(x => x.Status)
                         .AsNoTracking()
-                        .Where(x => x.CustomerId == khachhang.Id)
+                        .Where(x => x.CustomerId == khachhang.Id && x.StatusId != 7)
                         .OrderByDescending(x => x.OrderDate)
                         .ToList();
                     ViewBag.DonHang = lsDonHang;
@@ -196,7 +196,7 @@ namespace DATN2.Controllers
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(claimsPrincipal);
                     _notyfService.Success("Đăng nhập thành công");
-                    return RedirectToAction("Dashboard", "Accounts");
+                    return RedirectToAction("Index", "Home");
                     //if (string.IsNullOrEmpty(returnUrl))
                     //{
                     //    return RedirectToAction("Dashboard", "Accounts");

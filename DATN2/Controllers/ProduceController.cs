@@ -17,7 +17,7 @@ namespace DATN2.Controllers
             try
             {
                 var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-                var pageSize = 10;
+                var pageSize = 80;
                 var lsproduces = _context.Produces
                     .AsNoTracking()
                     .OrderBy(x => x.Name);
@@ -37,7 +37,7 @@ namespace DATN2.Controllers
         {
             try
             {
-                var pageSize = 10;
+                var pageSize = 80;
                 var danhmuc = _context.Categories.AsNoTracking().SingleOrDefault(x => x.Alias == Alias);
 
                 var lsTinDangs = _context.Produces

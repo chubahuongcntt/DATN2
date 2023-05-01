@@ -124,7 +124,7 @@ namespace DATN2.Areas.Admin.Controllers
                 ViewData["CatId"] = new SelectList(_context.Categories, "Id", "Name", produce.CatId);
                 return View(produce);
             }
-            catch(Exception ex)
+            catch
             {
                 return RedirectToAction(nameof(Create));
             }

@@ -14,7 +14,7 @@ public partial class OrderDetail
     public int? OrderNumber { get; set; }
 
     public int? Quantity { get; set; }
-    
+
     public int? Discount { get; set; }
 
     public int? Total { get; set; }
@@ -31,4 +31,5 @@ public partial class OrderDetail
 
     public virtual Order? Order { get; set; }
 
+    public virtual Produce? Produce { get; set; }
 }

@@ -54,7 +54,7 @@
                                 <p>
                                     Xin chào, <b>@Model.Name</b>
                                 </p>
-                                <p>Địa chỉ: @Model.BirthDay</p>
+                                <p>Ngày sinh: @Model.BirthDay</p>
                                 <p>Email: @Model.Email</p>
                                 <p>Số điện thoại: @Model.Phone</p>
                                 <p>Địa chỉ: @Model.Address</p>
@@ -69,24 +69,27 @@
                                         <table class="table table-bordered table-hover">
                                             <tbody>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <th>STT</th>
                                                     <th>Ngày mua hàng</th>
                                                     <th>Ngày ship hàng</th>
                                                     <th>Trạng thái</th>
                                                 </tr>
-                                                @foreach (var item in DanhSachDonHang)
-                                                {
-                                                    <tr>
-                                                        <td><a class="account-order-id" href="javascript:void(0)">#@item.Id</a></td>
-                                                        <td>@item.OrderDate</td>
-                                                        <td>@item.ShipDate</td>
-                                                        <td>@item.Status.Status</td>
-                                                        <td>
-                                                            <a href="javascript:void(0)" class="xemdonhang" data-madonhang="@item.Id">Xem đơn hàng</a>
-                                                        </td>
-                                                    </tr>
+                                                @{
+                                                    int i = 1;
+                                                    foreach (var item in DanhSachDonHang)
+                                                    {
+                                                        <tr>
+                                                            <td>@i</td>
+                                                            <td>@item.OrderDate</td>
+                                                            <td>@item.ShipDate</td>
+                                                            <td>@item.Status.Status</td>
+                                                            <td>
+                                                                <a href="javascript:void(0)" class="xemdonhang" data-madonhang="@item.Id">Xem đơn hàng</a>
+                                                            </td>
+                                                        </tr>
+                                                        i++;
+                                                    }
                                                 }
-
 
                                             </tbody>
                                         </table>
@@ -95,7 +98,7 @@
                                         <br />
                                         <br />
                                         <hr />
-                                        <div id="records_table">
+                                        <div id="records_table_1">
                                         </div>
                                     </div>
                                 }
@@ -118,25 +121,26 @@
     </div>
 </main>
 @section Scripts{
-<script>
-    $(document).ready(function () {
-        $(".xemdonhang").click(function () {
-            var madonhang = $(this).attr("data-madonhang")
-            $.ajax({
-                url: '/DonHang/Details',
-                datatype: "json",
-                type: "POST",
-                data: { id: madonhang },
-                async: true,
-                success: function (results) {
-                    $("#records_table").html("");
-                    $("#records_table").html(results);
-                },
-                error: function (xhr) {
-                    alert('error');
-                }
+    <script>
+        $(document).ready(function () {
+            $(".xemdonhang").click(function () {
+                var madonhang = $(this).attr("data-madonhang")
+                $.ajax({
+                    url: '/DonHang/Details',
+                    datatype: "json",
+                    type: "POST",
+                    data: { id: madonhang },
+                    async: true,
+                    success: function (results) {
+
+                        $("#records_table_1").html("");
+                        $("#records_table_1").html(results);
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 }

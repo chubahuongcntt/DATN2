@@ -6,6 +6,5 @@ namespace DATN2.ModelViews
     {
         public Produce produce { get; set; }
         public int amount { get; set; }
-        public double TotalMoney => amount * produce.Price.Value;
-    }
+        public double TotalMoney => amount * produce.Discount.Value;    }
 }

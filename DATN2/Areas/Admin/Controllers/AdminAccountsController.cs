@@ -53,7 +53,7 @@ namespace DATN2.Areas.Admin.Controllers
         // GET: Admin/AdminAccounts/Create
         public IActionResult Create()
         {
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id");
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name");
             return View();
         }
 
@@ -70,7 +70,7 @@ namespace DATN2.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
             return View(account);
         }
 
@@ -87,7 +87,7 @@ namespace DATN2.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
             return View(account);
         }
 
@@ -123,7 +123,7 @@ namespace DATN2.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
             return View(account);
         }
 

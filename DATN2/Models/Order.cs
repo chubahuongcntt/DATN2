@@ -33,8 +33,7 @@ public partial class Order
 
     public int? Ward { get; set; }
 
-    public int TotalMoney { get; set; }
-
+    public int? TotalMoney { get; set; }
 
     public virtual Customer? Customer { get; set; }
 

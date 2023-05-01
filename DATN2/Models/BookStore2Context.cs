@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using DATN2.ModelViews;
 
 namespace DATN2.Models;
 
@@ -36,7 +35,9 @@ public partial class BookStore2Context : DbContext
 
     public virtual DbSet<TransitionStatus> TransitionStatuses { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-TPK334P\\SQLEXPRESS;Database=BookStore2; Trusted_Connection=True;Encrypt=False; ");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -100,6 +101,9 @@ public partial class BookStore2Context : DbContext
             entity.ToTable("category");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Alias)
+                .HasMaxLength(50)
+                .HasColumnName("alias");
             entity.Property(e => e.Cover)
                 .HasMaxLength(100)
                 .HasColumnName("cover");
@@ -137,6 +141,7 @@ public partial class BookStore2Context : DbContext
             entity.Property(e => e.CreateDate)
                 .HasColumnType("date")
                 .HasColumnName("createDate");
+            entity.Property(e => e.District).HasColumnName("district");
             entity.Property(e => e.Email)
                 .HasMaxLength(500)
                 .IsUnicode(false)
@@ -144,6 +149,7 @@ public partial class BookStore2Context : DbContext
             entity.Property(e => e.LastLogin)
                 .HasColumnType("date")
                 .HasColumnName("lastLogin");
+            entity.Property(e => e.LocationId).HasColumnName("locationId");
             entity.Property(e => e.Name)
                 .HasMaxLength(500)
                 .HasColumnName("name");
@@ -158,6 +164,7 @@ public partial class BookStore2Context : DbContext
                 .HasMaxLength(10)
                 .IsFixedLength()
                 .HasColumnName("satl");
+            entity.Property(e => e.Ward).HasColumnName("ward");
         });
 
         modelBuilder.Entity<Location>(entity =>
@@ -176,8 +183,13 @@ public partial class BookStore2Context : DbContext
             entity.ToTable("order");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Address)
+                .HasMaxLength(50)
+                .HasColumnName("address");
             entity.Property(e => e.CustomerId).HasColumnName("customerId");
             entity.Property(e => e.Deleted).HasColumnName("deleted");
+            entity.Property(e => e.District).HasColumnName("district");
+            entity.Property(e => e.LocationId).HasColumnName("locationId");
             entity.Property(e => e.Note)
                 .HasMaxLength(500)
                 .HasColumnName("note");
@@ -193,6 +205,8 @@ public partial class BookStore2Context : DbContext
                 .HasColumnType("date")
                 .HasColumnName("shipDate");
             entity.Property(e => e.StatusId).HasColumnName("statusId");
+            entity.Property(e => e.TotalMoney).HasColumnName("totalMoney");
+            entity.Property(e => e.Ward).HasColumnName("ward");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
@@ -208,21 +222,29 @@ public partial class BookStore2Context : DbContext
             entity.ToTable("orderDetail");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Amount).HasColumnName("amount");
+            entity.Property(e => e.CreateDate)
+                .HasColumnType("date")
+                .HasColumnName("createDate");
             entity.Property(e => e.Discount).HasColumnName("discount");
             entity.Property(e => e.OrderId).HasColumnName("orderId");
             entity.Property(e => e.OrderNumber).HasColumnName("orderNumber");
+            entity.Property(e => e.Price).HasColumnName("price");
             entity.Property(e => e.ProduceId).HasColumnName("produceId");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.ShipDate)
                 .HasColumnType("date")
                 .HasColumnName("shipDate");
             entity.Property(e => e.Total).HasColumnName("total");
+            entity.Property(e => e.TotalMoney).HasColumnName("totalMoney");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK_orderDetail_order");
 
-
+            entity.HasOne(d => d.Produce).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.ProduceId)
+                .HasConstraintName("FK_orderDetail_produce");
         });
 
         modelBuilder.Entity<Produce>(entity =>
@@ -231,9 +253,15 @@ public partial class BookStore2Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Active).HasColumnName("active");
+            entity.Property(e => e.Alias)
+                .HasMaxLength(50)
+                .HasColumnName("alias");
             entity.Property(e => e.AutId).HasColumnName("autId");
             entity.Property(e => e.BestSell).HasColumnName("bestSell");
             entity.Property(e => e.CatId).HasColumnName("catId");
+            entity.Property(e => e.Datecreate)
+                .HasColumnType("date")
+                .HasColumnName("datecreate");
             entity.Property(e => e.Desciption)
                 .HasMaxLength(500)
                 .HasColumnName("desciption");
@@ -242,6 +270,9 @@ public partial class BookStore2Context : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
+            entity.Property(e => e.NhaXb)
+                .HasMaxLength(100)
+                .HasColumnName("nhaXB");
             entity.Property(e => e.Price).HasColumnName("price");
             entity.Property(e => e.Tag)
                 .HasMaxLength(500)
@@ -290,8 +321,4 @@ public partial class BookStore2Context : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-    public DbSet<DATN2.ModelViews.RegisterViewModel>? RegisterViewModel { get; set; }
-
-    public DbSet<DATN2.ModelViews.LoginViewModel>? LoginViewModel { get; set; }
 }
