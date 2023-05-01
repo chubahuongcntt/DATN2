@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DATN2.Controllers
 {
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly BookStore2Context  _context;
@@ -77,6 +78,28 @@ namespace DATN2.Controllers
             }
             return RedirectToAction("Login");
         }
+        public IActionResult Edit()
+        {
+            var taikhoanID = HttpContext.Session.GetString("CustomerId");
+            if (taikhoanID != null)
+            {
+                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(taikhoanID));
+                if (khachhang != null)
+                {
+                    var lsDonHang = _context.Orders
+                        .Include(x => x.Status)
+                        .AsNoTracking()
+                        .Where(x => x.CustomerId == khachhang.Id && x.StatusId != 7)
+                        .OrderByDescending(x => x.OrderDate)
+                        .ToList();
+                    ViewBag.DonHang = lsDonHang;
+                    return View(khachhang);
+                }
+
+            }
+            return RedirectToAction("Login");
+        }
+
         [HttpGet]
         [AllowAnonymous]
         [Route("dang-ky.html", Name = "DangKy")]
@@ -159,20 +182,17 @@ namespace DATN2.Controllers
         {
             try
             {
-                Console.WriteLine("112233");
                 if (ModelState.IsValid)
                 {
-                    Console.WriteLine("112233");
                     bool isEmail = Utilities.IsValidEmail(customer.UserName);
                     if (!isEmail) return View(customer);
-
                     var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.Trim() == customer.UserName);
 
                     if (khachhang == null) return RedirectToAction("DangkyTaiKhoan");
                     string pass = (customer.Password + khachhang.Satl.Trim()).ToMD5();
                     if (khachhang.Password != pass)
                     {
-                        _notyfService.Success("Thông tin đăng nhập chưa chính xác");
+                        _notyfService.Error("Thông tin đăng nhập chưa chính xác");
                         return View(customer);
                     }
                     //kiem tra xem account co bi disable hay khong
@@ -197,23 +217,15 @@ namespace DATN2.Controllers
                     await HttpContext.SignInAsync(claimsPrincipal);
                     _notyfService.Success("Đăng nhập thành công");
                     return RedirectToAction("Index", "Home");
-                    //if (string.IsNullOrEmpty(returnUrl))
-                    //{
-                    //    return RedirectToAction("Dashboard", "Accounts");
-                    //}
-                    //else
-                    //{
-                    //    return Redirect(returnUrl);
-                    //}
                 }
             }
             catch
             {
-                Console.WriteLine("112233");
                 return RedirectToAction("DangkyTaiKhoan", "Accounts");
             }
             return View(customer);
         }
+
         [HttpGet]
         [Route("dang-xuat.html", Name = "DangXuat")]
         public IActionResult Logout()

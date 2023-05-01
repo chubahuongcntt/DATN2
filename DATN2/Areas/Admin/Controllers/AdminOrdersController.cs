@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using PagedList.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DATN2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class AdminOrdersController : Controller
     {
         private readonly BookStore2Context _context;

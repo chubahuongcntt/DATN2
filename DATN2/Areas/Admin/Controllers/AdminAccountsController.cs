@@ -6,17 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using DATN2.Areas.Admin.Models;
+using DATN2.Extension;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DATN2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class AdminAccountsController : Controller
     {
         private readonly BookStore2Context _context;
-
-        public AdminAccountsController(BookStore2Context context)
+        public INotyfService _notyfService { get; }
+        public AdminAccountsController(BookStore2Context context, INotyfService notyfService)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         // GET: Admin/AdminAccounts
@@ -72,6 +78,34 @@ namespace DATN2.Areas.Admin.Controllers
             }
             ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
             return View(account);
+        }
+
+        //ChangePassword
+        public IActionResult ChangePassword()
+        {
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "RoleName");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var taikhoan = _context.Accounts.AsNoTracking().SingleOrDefault(x => x.Email == model.Email);
+                if (taikhoan == null) return RedirectToAction("Login", "Accounts");
+                var pass = (model.PasswordNow.Trim() + taikhoan.Salt.Trim()).ToMD5();
+                {
+                    string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
+                    taikhoan.Password = passnew;
+                    taikhoan.LastLogin = DateTime.Now;
+                    _context.Update(taikhoan);
+                    _context.SaveChanges();
+                    _notyfService.Success("Đổi mật khẩu thành công");
+                    return RedirectToAction("Login", "Accounts", new { Area = "Admin" });
+                }
+            }
+            return View();
         }
 
         // GET: Admin/AdminAccounts/Edit/5

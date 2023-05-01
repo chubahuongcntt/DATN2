@@ -9,10 +9,12 @@ using DATN2.Models;
 using PagedList.Core;
 using DATN2.Helpper;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DATN2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class AdminProducesController : Controller
     {
         private readonly BookStore2Context _context;
@@ -24,7 +26,7 @@ namespace DATN2.Areas.Admin.Controllers
         }
 
         // GET: Admin/AdminProduces
-        public IActionResult Index(int page = 1, int CatID = 0)
+        public IActionResult Index(int page = 1, int CatID = 0) 
         {
             var pageNumber = page;
             var pageSize = 10;

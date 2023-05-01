@@ -18,7 +18,7 @@
                     <div class="sidebar-area">
                         <div class="widgets-searchbox mb-9">
                             <form id="widgets-searchbox" action="#">
-                                <input class="input-field" type="text" placeholder="Search">
+                                <input id="keyword" name="keyword" class="input-field" type="text" placeholder="Search">
                                 <button class="widgets-searchbox-btn" type="submit">
                                     <i class="pe-7s-search"></i>
                                 </button>
@@ -252,7 +252,7 @@
                                 </ul>
                             </li>
                             <li class="page-count">
-                                <span>23</span> Product Found of <span>50</span>
+                                <span>@Model.Count()</span> Book on bookStore
                             </li>
                             <li class="short">
                                 <select class="nice-select wide rounded-0">
@@ -314,49 +314,50 @@
                         </div>
                         <div class="tab-pane fade show active" id="list-view" role="tabpanel" aria-labelledby="list-view-tab">
                             <div class="product-list-view with-sidebar row">
-                                @if (Model != null && Model.Count() > 0)
-                                {
-                                    foreach (var item in Model)
+                                <div id="records_table">
+                                    @if (Model != null && Model.Count() > 0)
                                     {
-                                        string url = $"/{item.Alias}-{item.Id}.html";
-                                        <div class="col-12 pt-6">
-                                            <div class="product-item">
-                                                <div class="product-img img-zoom-effect">
-                                                    <a href="@url">
-                                                        <img style="width:170px; height:220px; margin-left: 40px;" class="img-full" src="~/images/produces/@item.Thumb" alt="@item.Name">
-                                                    </a>
-                                                    <div class="product-add-action">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="@url">
-                                                                    <i class="pe-7s-cart"></i>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
+                                        foreach (var item in Model)
+                                        {
+                                            string url = $"/{item.Alias}-{item.Id}.html";
+                                            <div class="col-12 pt-6">
+                                                <div class="product-item">
+                                                    <div class="product-img img-zoom-effect">
+                                                        <a href="@url">
+                                                            <img style="width:170px; height:220px; margin-left: 40px;" class="img-full" src="~/images/produces/@item.Thumb" alt="@item.Name">
+                                                        </a>
+                                                        <div class="product-add-action">
+                                                            <ul>
+                                                                <li>
+                                                                    <a href="@url">
+                                                                        <i class="pe-7s-cart"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="product-content align-self-center">
-                                                    <a class="product-name pb-2" href="@url">@item.Name</a>
-                                                    <div class="price-box pb-1">
-                                                        <span class="new-price text-danger">@item.Discount.Value.ToString("#,##0") VNĐ</span>
-                                                        <span class="old-price text-primary">@item.Price.Value.ToString("#,##0") VNĐ</span>
+                                                    <div class="product-content align-self-center">
+                                                        <a class="product-name pb-2" href="@url">@item.Name</a>
+                                                        <div class="price-box pb-1">
+                                                            <span class="new-price text-danger">@item.Discount.Value.ToString("#,##0") VNĐ</span>
+                                                            <span class="old-price text-primary">@item.Price.Value.ToString("#,##0") VNĐ</span>
+                                                        </div>
+                                                        <div class="rating-box pb-2">
+                                                            <ul>
+                                                                <li><i class="pe-7s-star"></i></li>
+                                                                <li><i class="pe-7s-star"></i></li>
+                                                                <li><i class="pe-7s-star"></i></li>
+                                                                <li><i class="pe-7s-star"></i></li>
+                                                                <li><i class="pe-7s-star"></i></li>
+                                                            </ul>
+                                                        </div>
+                                                        <p class="short-desc mb-0"> @item.Desciption </p>
                                                     </div>
-                                                    <div class="rating-box pb-2">
-                                                        <ul>
-                                                            <li><i class="pe-7s-star"></i></li>
-                                                            <li><i class="pe-7s-star"></i></li>
-                                                            <li><i class="pe-7s-star"></i></li>
-                                                            <li><i class="pe-7s-star"></i></li>
-                                                            <li><i class="pe-7s-star"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <p class="short-desc mb-0"> @item.Desciption </p>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     }
-                                }
-
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -371,3 +372,25 @@
     </div>
 </main>
 <!-- Main Content Area End Here -->
+@section Scripts{
+        <script>
+                $("#keyword").keyup(function () {
+                    var strkeyword = $('#keyword').val();
+                    $.ajax({
+                        url: '/Search/FindProduce/',
+                        datatype: "json",
+                        type: "POST",
+                        data: { keyword: strkeyword },
+                        async: true,
+                        success: function (results) {
+                            $("#records_table").html("");
+                            $("#records_table").html(results);
+                        },
+                        error: function (xhr) {
+                        }
+                    });
+                });
+            });
+        </script>
+
+}

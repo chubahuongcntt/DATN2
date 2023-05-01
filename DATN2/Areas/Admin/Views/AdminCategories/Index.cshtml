@@ -33,7 +33,7 @@
         <table class="table table-hover e-commerce-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>STT</th>
                     <th>Tên danh mục</th>
                     <th>Mô tả</th>
                     <th>Sắp xếp</th>
@@ -44,11 +44,13 @@
             <tbody>
                 @if (Model != null)
                 {
+                    int i = 0;
                     foreach (var item in Model)
                     {
+                        i++;
                         string url = $"/{item.Alias}";
                         <tr>
-                            <td>@item.Id</td>
+                            <td>@i</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <img width="50" height="50" src="~/images/category/@item.Thums" alt="@item.Name" />

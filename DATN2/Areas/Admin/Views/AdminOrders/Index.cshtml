@@ -29,7 +29,7 @@
             <table class="table table-hover e-commerce-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>STT</th>
                         <th>Đơn hàng</th>
                         <th>Ngày mua</th>
                         <th>Tổng tiền</th>
@@ -40,11 +40,12 @@
                 <tbody>
                     @if (Model != null)
                     {
+                        int i = 0;
                         foreach (var item in Model)
                         {
-
+                            i++;
                             <tr>
-                                <td>@item.Id</td>
+                                <td>@i</td>
                                 <td>@item.Customer.Name</td>
                                 <td>@item.OrderDate</td>
                                 @*<td>@item.OrderDetails.Sum(x =>x.TotalMoney).Value.ToString("#,##0") VNĐ</td>*@

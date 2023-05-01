@@ -19,11 +19,9 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(p =>
                 {
-                    //p.Cookie.Name = "UserLoginCookie";
-                    //p.ExpireTimeSpan = TimeSpan.FromDays(1);
-                    p.LoginPath = "/dang-nhap.html";
-                    p.LogoutPath = "/dang-xuat/html";
-                    //p.AccessDeniedPath = "/not-found.html";
+                    p.Cookie.Name = "UserLoginCookie";
+                    p.ExpireTimeSpan = TimeSpan.FromDays(1);
+                    p.AccessDeniedPath = "/not-found.html";
                 });
 var app = builder.Build();
 
@@ -46,7 +44,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
       name: "areas",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+      pattern: "{area:exists}/{controller=Account}/{action=AdminLogin}/{id?}"
     );
     endpoints.MapControllerRoute(
       name: "default",
