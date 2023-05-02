@@ -78,28 +78,7 @@ namespace DATN2.Controllers
             }
             return RedirectToAction("Login");
         }
-        public IActionResult Edit()
-        {
-            var taikhoanID = HttpContext.Session.GetString("CustomerId");
-            if (taikhoanID != null)
-            {
-                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(taikhoanID));
-                if (khachhang != null)
-                {
-                    var lsDonHang = _context.Orders
-                        .Include(x => x.Status)
-                        .AsNoTracking()
-                        .Where(x => x.CustomerId == khachhang.Id && x.StatusId != 7)
-                        .OrderByDescending(x => x.OrderDate)
-                        .ToList();
-                    ViewBag.DonHang = lsDonHang;
-                    return View(khachhang);
-                }
-
-            }
-            return RedirectToAction("Login");
-        }
-
+       
         [HttpGet]
         [AllowAnonymous]
         [Route("dang-ky.html", Name = "DangKy")]

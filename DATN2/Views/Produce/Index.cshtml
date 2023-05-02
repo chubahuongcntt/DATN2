@@ -373,24 +373,26 @@
 </main>
 <!-- Main Content Area End Here -->
 @section Scripts{
-        <script>
-                $("#keyword").keyup(function () {
-                    var strkeyword = $('#keyword').val();
-                    $.ajax({
-                        url: '/Search/FindProduce/',
-                        datatype: "json",
-                        type: "POST",
-                        data: { keyword: strkeyword },
-                        async: true,
-                        success: function (results) {
-                            $("#records_table").html("");
-                            $("#records_table").html(results);
-                        },
-                        error: function (xhr) {
-                        }
-                    });
+    <script>
+        $(document).ready(function () {
+            $("#keyword").keyup(function () {
+                alert("a");
+                var strkeyword = $('#keyword').val();
+                $.ajax({
+                    url: '/Search/FindProduce/',
+                    datatype: "json",
+                    type: "POST",
+                    data: { keyword: strkeyword },
+                    async: true,
+                    success: function (results) {
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function (xhr) {
+                    }
                 });
             });
-        </script>
+        });
+    </script>
 
 }
