@@ -61,10 +61,10 @@ namespace DATN2.Areas.Admin.Controllers
         }
         public IActionResult Filtter(int CatID = 0)
         {
-            var url = $"/Admin/AdminProduces?CatID={CatID}";
+            var url = $"/Admin/AdminProduces/Index?CatID={CatID}";
             if (CatID == 0)
             {
-                url = $"/Admin/AdminProduces";
+                url = $"/Admin/AdminProduces/Index";
             }
             return Json(new { status = "success", redirectUrl = url });
         }

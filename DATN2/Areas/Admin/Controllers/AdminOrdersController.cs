@@ -26,20 +26,43 @@ namespace DATN2.Areas.Admin.Controllers
         }
 
         // GET: Admin/Admin
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, int StatusId = 0)
         {
-            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value; 
             var pageSize = 20;
-            var Orders = _context.Orders.Include(o => o.Customer).Include(o => o.Status)
-                .AsNoTracking()
-                .OrderBy(x => x.OrderDate);
-            PagedList<Order> models = new PagedList<Order>(Orders, pageNumber, pageSize);
+
+            List<Order> orders = new List<Order>();
+            if(StatusId !=0)
+            {
+                orders = _context.Orders
+                    .Where(x=>x.StatusId==StatusId)
+                    .Include(o => o.Customer).Include(o => o.Status)
+                    .AsNoTracking()
+                    .OrderBy(x => x.OrderDate).ToList();
+            }
+            else
+            {
+                orders = _context.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.Status)
+                    .AsNoTracking()
+                    .OrderBy(x => x.OrderDate).ToList();
+            }
+            PagedList<Order> models = new PagedList<Order>(orders.AsQueryable(), pageNumber, pageSize);
 
             ViewBag.CurrentPage = pageNumber;
-
-
-
+            ViewData["TrangThai"] = new SelectList(_context.TransitionStatuses, "Id", "Status");
             return View(models);
+        }
+
+        public IActionResult Filtter(int StatusId = 0)
+        {
+            var url = $"/Admin/AdminOrders/Index?StatusId={StatusId}";
+            if (StatusId == 0)
+            {
+                url = $"/Admin/AdminOrders/Index";
+            }
+            return Json(new { status = "success", redirectUrl = url });
         }
 
         // GET: Admin/Admin/Details/5

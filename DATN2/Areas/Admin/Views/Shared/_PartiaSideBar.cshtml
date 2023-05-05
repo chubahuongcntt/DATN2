@@ -6,23 +6,21 @@
             <img src="~/template/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info" style="font-size:18px; font-family:Arial; color:white">
-            Alexander Pierce
+            ADMIN
         </div>
     </div>
 
     <!-- SidebarSearch Form -->
-
-
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
             <li class="nav-item">
-                <a href="/Toppics" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                <a asp-area="Admin" asp-controller="Statistical" asp-action="Index" class="nav-link">
+                    <i class="nav-icon fas fa-chart-pie"></i>
                     <p>
-                        Dashboard
+                        Thống kê
                     </p>
                 </a>
             </li>
@@ -36,46 +34,27 @@
             </li>
             <li class="nav-item">
                 <a asp-area="Admin" asp-controller="AdminProduces" asp-action="Index" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-book"></i>
                     <p>
                         Quản lý sách
                     </p>
                 </a>
             </li>
             <li class="nav-item">
-                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Quản lý Khách hàng
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
+                <a asp-area="Admin" asp-controller="AdminCategories" asp-action="Index" class="nav-link">
+                    <i class="nav-icon far fa-calendar-alt"></i>
+                    <p>Quản lý danh mục</p>
                 </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="AdminCustomers" asp-action="Index" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Danh sách khách hàng</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Tìm kiếm khách hàng</p>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class="nav-item">
-                <a href="Publishers" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Danh số
-                    </p>
+                <a asp-area="Admin" asp-controller="AdminAuthors" asp-action="Index" class="nav-link">
+                    <i class="nav-icon fas fa-edit"></i>
+                    <p>Quản lý tác giả</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="Orders" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                    <i class="nav-icon fas fa-table"></i>
                     <p>
                         Quản lý hệ thống
                         <i class="right fas fa-angle-left"></i>
@@ -85,25 +64,19 @@
                     <li class="nav-item">
                         <a asp-area="Admin" asp-controller="AdminAccounts" asp-action="Index" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Quản lý tài khoản</p>
+                            <p>Tài khoản quản trị</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="AdminCategories" asp-action="Index" class="nav-link">
+                        <a asp-area="Admin" asp-controller="AdminCustomers" asp-action="Index" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Quản lý danh mục</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="AdminAuthors" asp-action="Index" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Quản lý tác giả</p>
+                            <p>Tài khoản khách hàng</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Quản lý quyền truy cập</p>
+                            <p>Quyền truy cập</p>
                         </a>
                     </li>
                 </ul>

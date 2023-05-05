@@ -12,24 +12,21 @@ namespace DATN2.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(int? page)
-        {
-            try
-            {
-                var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-                var pageSize = 80;
-                var lsproduces = _context.Produces
-                    .AsNoTracking()
-                    .OrderBy(x => x.Name);
-                PagedList<Produce> models = new PagedList<Produce>(lsproduces, pageNumber, pageSize);
 
-                ViewBag.CurrentPage = pageNumber;
-                return View(models);
-            }
-            catch
+        public IActionResult Index(string searchText = "")
+        {
+            List<Produce> produces = new List<Produce>();
+            if (searchText != null && searchText != "")
             {
-                return RedirectToAction("Index", "Home");
+                produces = _context.Produces.Where(x => x.Name.Contains(searchText))
+                    .AsNoTracking().OrderByDescending(x => x.Datecreate).ToList();
             }
+            else
+            {
+                produces = _context.Produces.AsNoTracking()
+                    .OrderByDescending(x => x.Datecreate).ToList();
+            }
+            return View(produces);
         }
 
         [Route("danhmuc/{Alias}", Name = ("ListProduce"))]

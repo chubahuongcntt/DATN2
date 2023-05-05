@@ -22,16 +22,16 @@
         <form asp-controller="AdminCategories" asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Tên danh mục</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+           <div class="form-group">
+                <label asp-for="Description" class="control-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="ParentId" class="control-label"></label>
                 <input asp-for="ParentId" class="form-control" />
                 <span asp-validation-for="ParentId" class="text-danger"></span>
@@ -45,7 +45,7 @@
                 <label asp-for="Odering" class="control-label"></label>
                 <input asp-for="Odering" class="form-control" />
                 <span asp-validation-for="Odering" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
@@ -61,7 +61,7 @@
                 <input name="fThums" type="file" class="form-control-file" asp-for="Thums" />
                 <span asp-validation-for="Thums" class="text-danger"></span>
             </div>
-            <div class="form-group">
+@*            <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
@@ -70,7 +70,7 @@
                 <label asp-for="Cover" class="control-label"></label>
                 <input asp-for="Cover" class="form-control" />
                 <span asp-validation-for="Cover" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Thêm mới" class="btn btn-primary" /> |
                 <a asp-action="Index" class="btn btn-danger">Về danh sách</a>

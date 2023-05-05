@@ -19,74 +19,77 @@
 <h4>Sách</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="m-t-25">
         <form asp-controller="AdminProduces" asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Tên sách</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Name" class="control-label">Tên sách</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Desciption" class="control-label">Mô tả</label>
+                    <input asp-for="Desciption" class="form-control" />
+                    <span asp-validation-for="Desciption" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Desciption" class="control-label" >Mô tả</label>
-                <input asp-for="Desciption" class="form-control"/>
-                <span asp-validation-for="Desciption" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="CatId" class="control-label">Danh mục</label>
+                    <select asp-for="CatId" class="form-control" asp-items="ViewBag.CatId"></select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="AutId" class="control-label">Tác giả</label>
+                    <select asp-for="AutId" class="form-control" asp-items="ViewBag.AutId"></select>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CatId" class="control-label">Danh mục</label>
-                <select asp-for="CatId" class ="form-control" asp-items="ViewBag.CatId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AutId" class="control-label">Tác giả</label>
-                <select asp-for="AutId" class ="form-control" asp-items="ViewBag.AutId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="NhaXb" class="control-label">Nhà xuất bản</label>
-                <input asp-for="NhaXb" class="form-control" />
-                <span asp-validation-for="NhaXb" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label">Đơn giá</label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Discount" class="control-label">Giá giảm</label>
-                <input asp-for="Discount" class="form-control" />
-                <span asp-validation-for="Discount" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
-                <input name="fThumb" type="file" class="form-control-file" asp-for="Thumb" />
-                <span asp-validation-for="Thumb" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="BestSell" /> @Html.DisplayNameFor(model => model.BestSell)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HomeFlag" /> @Html.DisplayNameFor(model => model.HomeFlag)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tag" class="control-label"></label>
-                <input asp-for="Tag" class="form-control" />
-                <span asp-validation-for="Tag" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-6">
                 <label asp-for="UnitslnStock" class="control-label">Tồn kho</label>
                 <input asp-for="UnitslnStock" class="form-control" />
                 <span asp-validation-for="UnitslnStock" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-6">
+                <label asp-for="NhaXb" class="control-label">Nhà xuất bản</label>
+                <input asp-for="NhaXb" class="form-control" />
+                <span asp-validation-for="NhaXb" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                <label asp-for="Price" class="control-label">Giá ban đầu</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Discount" class="control-label">Giá bán</label>
+                <input asp-for="Discount" class="form-control" />
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
+                <input name="fThumb" type="file" class="form-control-file" asp-for="Thumb" />
+                <span asp-validation-for="Thumb" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="BestSell" /> @Html.DisplayNameFor(model => model.BestSell)
+                </label>
+            </div>
+            <div class="form-group col-md-6 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HomeFlag" /> @Html.DisplayNameFor(model => model.HomeFlag)
+                </label>
+            </div>
+            <div class="form-group col-md-6 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <div class="form-group col-md-6">
                 <input type="submit" value="Thêm mới" class="btn btn-primary"/> | 
                 <a asp-action="Index" class="btn btn-danger">Về danh sách</a>
             </div>
