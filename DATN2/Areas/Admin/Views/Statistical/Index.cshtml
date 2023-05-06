@@ -55,17 +55,22 @@
 @section scripts{
     <script>
         $(function () {
-            $("#btnSave").click(function(){
-                $.ajax({
-                    url: '/Statistical/GetStatistical/',
-                    datatype: "json",
-                    type: 'GET',
-                    data: {},
-                    success: function (rs) {
-                        alert('rs');
-                        console.log(rs.Data);
-                    }
-                });
+
+            //var arrLoiNhuan = [];
+            //var arrDate[];
+
+            $.ajax({
+                url: '/Admin/Statistical/GetStatistical',
+                type: 'GET',
+                data: {},
+                success: function (rs) { 
+                    
+                    $.each(rs.data, function(i, item){
+                        var strDate = moment(item.date).format()
+                        console.log(item.date);
+                        
+                    });
+                }
             });
             
             var areaChartData = {

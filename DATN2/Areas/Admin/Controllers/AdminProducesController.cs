@@ -25,7 +25,7 @@ namespace DATN2.Areas.Admin.Controllers
             _notyfService = notyfService;
         }
 
-        // GET: Admin/AdminProduces
+        // GET: Admin/AdminProduces 
         public IActionResult Index(int page = 1, int CatID = 0) 
         {
             var pageNumber = page;

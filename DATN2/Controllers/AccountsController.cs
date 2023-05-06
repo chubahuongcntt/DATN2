@@ -78,7 +78,7 @@ namespace DATN2.Controllers
             }
             return RedirectToAction("Login");
         }
-       
+
         [HttpGet]
         [AllowAnonymous]
         [Route("dang-ky.html", Name = "DangKy")]
@@ -164,10 +164,18 @@ namespace DATN2.Controllers
                 if (ModelState.IsValid)
                 {
                     bool isEmail = Utilities.IsValidEmail(customer.UserName);
-                    if (!isEmail) return View(customer);
+                    if (!isEmail)
+                    {
+                        _notyfService.Error("Thông tin đăng nhập chưa chính xác");
+                        return View(customer);
+                    }
                     var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Email.Trim() == customer.UserName);
 
-                    if (khachhang == null) return RedirectToAction("DangkyTaiKhoan");
+                    if (khachhang == null)
+                    {
+                        _notyfService.Error("Thông tin đăng nhập chưa chính xác");
+                        return View(customer);
+                    }
                     string pass = (customer.Password + khachhang.Satl.Trim()).ToMD5();
                     if (khachhang.Password != pass)
                     {

@@ -9,17 +9,14 @@
                             <div style="font-size:28px"><b>HỒNG HÀ BOOK</b></div>
                         </a>
                         <div class="header-search-area d-none d-lg-block">
-                            <form class="header-searchbox">
-                                <input id="keyword" name="keyword" class="input-field" type="text" placeholder="Tìm kiếm sản phẩm">
-                                <button class="btn btn-outline-whisper btn-primary-hover" type="submit"><i class="pe-7s-search"></i></button>
+                            <form id="widgets-searchbox" class="header-searchbox" asp-controller="Produce" asp-action="Index">
+                                <input id="searchText" name="searchText" class="input-field" type="text" placeholder="Search">
+                                <button class="btn btn-outline-whisper btn-primary-hover" type="submit">
+                                    <i class="pe-7s-search"></i>
+                                </button>
                             </form>
                             <div id="records_table" class="results-box">
                             </div>
-
-                            @*<div>
-                                <i class="prefix-icon anticon anticon-search opacity-04"></i>
-                                <input id="keyword" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
-                            </div>*@
                             <div class="table-responsive">
                                 <table class="table table-hover e-commerce-table">
                                     <tbody id="records_table">
@@ -88,9 +85,14 @@
                                     <li>
                                         <a asp-controller="Home" asp-action="Blog">Blog</a>
                                     </li>
-                                    <li>
-                                        <a href="/tai-khoan-cua-toi.html">Tài khoản</a>
-                                    </li>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li><a href="/tai-khoan-cua-toi.html">Tài khoản</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/dang-nhap.html">Tài khoản</a></li>
+                                    }
                                 </ul>
                             </nav>
                         </div>

@@ -1,5 +1,6 @@
 ﻿using DATN2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
 
@@ -13,7 +14,7 @@ namespace DATN2.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string searchText = "")
+        public IActionResult Index(string searchText = "", int CatID = 0)
         {
             List<Produce> produces = new List<Produce>();
             if (searchText != null && searchText != "")
@@ -26,9 +27,23 @@ namespace DATN2.Controllers
                 produces = _context.Produces.AsNoTracking()
                     .OrderByDescending(x => x.Datecreate).ToList();
             }
+            if(CatID != 0)
+            {
+                produces = _context.Produces.Where(x => x.CatId == CatID)
+                    .AsNoTracking().OrderByDescending(x => x.Datecreate).ToList();
+            }
+            ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
             return View(produces);
         }
-
+        public IActionResult Filtter(int CatID = 0)
+        {
+            var url = $"/Produce/Index?CatID={CatID}";
+            if (CatID == 0)
+            {
+                url = $"/Produce/Index";
+            }
+            return Json(new { status = "success", redirectUrl = url });
+        }
         [Route("danhmuc/{Alias}", Name = ("ListProduce"))]
         public IActionResult List(string Alias, int page = 1)
         {
