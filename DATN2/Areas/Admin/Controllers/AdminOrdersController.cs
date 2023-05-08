@@ -38,7 +38,7 @@ namespace DATN2.Areas.Admin.Controllers
                     .Where(x=>x.StatusId==StatusId)
                     .Include(o => o.Customer).Include(o => o.Status)
                     .AsNoTracking()
-                    .OrderBy(x => x.OrderDate).ToList();
+                    .OrderByDescending(x => x.OrderDate).ToList();
             }
             else
             {
@@ -46,7 +46,7 @@ namespace DATN2.Areas.Admin.Controllers
                     .Include(o => o.Customer)
                     .Include(o => o.Status)
                     .AsNoTracking()
-                    .OrderBy(x => x.OrderDate).ToList();
+                    .OrderByDescending(x => x.OrderDate).ToList();
             }
             PagedList<Order> models = new PagedList<Order>(orders.AsQueryable(), pageNumber, pageSize);
 
