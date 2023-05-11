@@ -10,7 +10,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using PagedList.Core;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DATN2.Areas.Admin.Controllers
+namespace DATN2.Areas.Admin.ControllersS
 {
     [Area("Admin")]
     [Authorize]
@@ -93,10 +93,8 @@ namespace DATN2.Areas.Admin.Controllers
 
         public async Task<IActionResult> ChangeStatus(int? id)
         {
-            Console.WriteLine("1");
             if (id == null)
             {
-                Console.WriteLine("2");
                 return NotFound();
             }
 
@@ -104,15 +102,11 @@ namespace DATN2.Areas.Admin.Controllers
                 .AsNoTracking()
                 .Include(x => x.Customer)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            Console.WriteLine("3");
             if (order == null)
             {
-                Console.WriteLine("4");
                 return NotFound();
             }
-            Console.WriteLine("5");
             ViewData["Trangthai"] = new SelectList(_context.TransitionStatuses, "Id", "Status", order.StatusId);
-            Console.WriteLine("6");
             return View("ChangeStatus", order);
         }
         [HttpPost]

@@ -36,17 +36,17 @@
                                 </div>
                                 <div class="swiper-slide">
                                     <a href="~/assets/images/product/large-size/2-2-555x645.jpg" class="single-img gallery-popup">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-2-555x645.jpg" alt="Product Image">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                 </div>
                                 <div class="swiper-slide">
                                     <a href="~/assets/images/product/large-size/2-3-555x645.jpg" class="single-img gallery-popup">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-3-555x645.jpg" alt="Product Image">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                 </div>
                                 <div class="swiper-slide">
                                     <a href="~/assets/images/product/large-size/2-4-555x645.jpg" class="single-img gallery-popup">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-4-555x645.jpg" alt="Product Image">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                 </div>
                             </div>
@@ -65,18 +65,7 @@
                                     <span class="old-price text-primary">@Model.Price.Value.ToString("#,##0") VNĐ</span>
                                 </div>
                                 <div class="rating-box-wrap pb-7">
-                                    <div class="rating-box">
-                                        <ul>
-                                            <li><i class="pe-7s-star"></i></li>
-                                            <li><i class="pe-7s-star"></i></li>
-                                            <li><i class="pe-7s-star"></i></li>
-                                            <li><i class="pe-7s-star"></i></li>
-                                            <li><i class="pe-7s-star"></i></li>
-                                        </ul>
-                                    </div>
-                                    <div class="review-status ps-4">
-                                        <a href="javascript:void(0)">( 1 Customer Review )</a>
-                                    </div>
+                                    Số lượng: @Model.UnitslnStock
                                 </div>
                                 <p class="short-desc mb-6">
                                     @Model.Desciption
@@ -84,7 +73,7 @@
                                 <ul class="quantity-with-btn pb-7">
                                     <li class="quantity">
                                         <div class="cart-plus-minus">
-                                            <input id="txtsoLuong" name="txtsoLuong" class="cart-plus-minus-box" value="1" type="text">
+                                            <input id="txtsoLuong" name="txtsoLuong" class="cart-plus-minus-box" value="1" maxlength="2" max="@Model.UnitslnStock" type="text">
                                         </div>
                                     </li>
                                     <li class="add-to-cart">
@@ -108,16 +97,16 @@
                             <div class="swiper-container single-product-thumbs">
                                 <div class="swiper-wrapper">
                                     <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-1-555x645.jpg" alt="Product Thumnail">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                     <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-2-555x645.jpg" alt="Product Thumnail">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                     <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-3-555x645.jpg" alt="Product Thumnail">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                     <a href="javascript:void(0)" class="swiper-slide">
-                                        <img class="img-full" src="~/assets/images/product/large-size/2-4-555x645.jpg" alt="Product Thumnail">
+                                        <img class="img-full" src="~/images/produces/@Model.Thumb" alt="@Model.Alias">
                                     </a>
                                 </div>
                             </div>

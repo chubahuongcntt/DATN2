@@ -54,5 +54,72 @@ namespace DATN2.Controllers
                 return NotFound();
             }
         }
+        public async Task<IActionResult> HuyDonHang(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var taikhoanID = HttpContext.Session.GetString("CustomerId");
+                if (string.IsNullOrEmpty(taikhoanID)) return RedirectToAction("Login", "Accounts");
+                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(taikhoanID));
+                if (khachhang == null)
+                {
+                    return NotFound();
+                }
+                var donhang = await _context.Orders
+                    .FirstOrDefaultAsync(m => m.Id == id && Convert.ToInt32(taikhoanID) == m.CustomerId);
+                if (donhang == null)
+                {
+                    return NotFound();
+                }
+                donhang.StatusId = 5;
+                _context.Update(donhang);
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Đã hủy đơn hàng");
+                return RedirectToAction("Dashboard", "Accounts");
+
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+        public async Task<IActionResult> DatLaiHang(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var taikhoanID = HttpContext.Session.GetString("CustomerId");
+                if (string.IsNullOrEmpty(taikhoanID)) return RedirectToAction("Login", "Accounts");
+                var khachhang = _context.Customers.AsNoTracking().SingleOrDefault(x => x.Id == Convert.ToInt32(taikhoanID));
+                if (khachhang == null)
+                {
+                    return NotFound();
+                }
+                var donhang = await _context.Orders
+                    .FirstOrDefaultAsync(m => m.Id == id && Convert.ToInt32(taikhoanID) == m.CustomerId);
+                if (donhang == null)
+                {
+                    return NotFound();
+                }
+                donhang.StatusId = 1;
+                donhang.OrderDate= DateTime.Now;
+                _context.Update(donhang);
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Đặt hàng thành công");
+                return RedirectToAction("Dashboard", "Accounts");
+
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
     }
 }

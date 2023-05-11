@@ -253,6 +253,7 @@ namespace DATN2.Controllers
                 return RedirectToAction("Dashboard", "Accounts");
             }
             _notyfService.Error("Thay đổi mật khẩu không thành công");
+           
             return RedirectToAction("Dashboard", "Accounts");
         }
     }

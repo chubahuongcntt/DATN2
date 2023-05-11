@@ -63,16 +63,15 @@
                 url: '/Admin/Statistical/GetStatistical',
                 type: 'GET',
                 data: {},
-                success: function (rs) { 
-                    
-                    $.each(rs.data, function(i, item){
-                        var strDate = moment(item.date).format()
-                        console.log(item.date);
+                success: function (rs) {
+                    console.log(rs);
+                    //$.each(rs.data, function(i, item){
+                    //    var strDate = moment(item.date).format()
+                    //    console.log(item.date);
                         
-                    });
+                    //});
                 }
             });
-            
             var areaChartData = {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [

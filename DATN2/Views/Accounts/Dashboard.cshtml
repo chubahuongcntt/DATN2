@@ -83,6 +83,12 @@
                                                             <td>@item.Status.Status</td>
                                                             <td>
                                                                 <a href="javascript:void(0)" class="xemdonhang" data-madonhang="@item.Id">Xem đơn hàng</a>
+                                                                @if(@item.StatusId == 1 || @item.StatusId == 2){
+                                                                    <a asp-controller="DonHang" asp-action="HuyDonHang" asp-route-id="@item.Id"> | Hủy đơn </a>
+                                                                }
+                                                                @if(@item.StatusId == 5){
+                                                                    <a asp-controller="DonHang" asp-action="DatLaiHang" asp-route-id="@item.Id"> | Đặt lại </a>
+                                                                }
                                                             </td>
                                                         </tr>
                                                         i++;

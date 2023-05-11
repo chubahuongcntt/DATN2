@@ -59,7 +59,6 @@ namespace DATN2.Controllers
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
             var taikhoanID = HttpContext.Session.GetString("CustomerId");
             MuaHangVM model = new MuaHangVM();
-            Console.WriteLine("1");
             if (taikhoanID != null)
             {
                 Console.WriteLine("2");

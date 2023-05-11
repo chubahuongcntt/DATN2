@@ -41,6 +41,12 @@ namespace DATN2.Controllers
                 {
                     item.amount = item.amount + amount.Value;
                     //luu lai session
+                    Produce hh = _context.Produces.SingleOrDefault(p => p.Id == Id);
+                    if (item.amount > hh.UnitslnStock)
+                    {
+                        _notyfService.Error("Thêm sản phẩm không thành công");
+                        return Json(new { success = false });
+                    }    
                     HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
                 }
                 else
@@ -51,6 +57,11 @@ namespace DATN2.Controllers
                         amount = amount.HasValue ? amount.Value : 1,
                         produce = hh
                     };
+                    if (item.amount > hh.UnitslnStock)
+                    {
+                        _notyfService.Error("Thêm sản phẩm không thành công");
+                        return Json(new { success = false });
+                    }
                     cart.Add(item);//Them vao gio
                 }
 
@@ -66,7 +77,7 @@ namespace DATN2.Controllers
         }
         [HttpPost]
         [Route("api/cart/update")]
-        public IActionResult UpdateCart(int productID, int? amount)
+        public IActionResult UpdateCart(int Id, int? amount)
         {
             //Lay gio hang ra de xu ly
             var cart = HttpContext.Session.Get<List<CartItem>>("GioHang");
@@ -74,7 +85,7 @@ namespace DATN2.Controllers
             {
                 if (cart != null)
                 {
-                    CartItem item = cart.SingleOrDefault(p => p.produce.Id == productID);
+                    CartItem item = cart.SingleOrDefault(p => p.produce.Id == Id);
                     if (item != null && amount.HasValue) // da co -> cap nhat so luong
                     {
                         item.amount = amount.Value;

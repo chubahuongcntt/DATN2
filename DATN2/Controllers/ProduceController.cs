@@ -35,6 +35,42 @@ namespace DATN2.Controllers
             ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
             return View(produces);
         }
+        public IActionResult SapXep(int? id)
+        {
+            List<Produce> produces = new List<Produce>();
+            if (id == 1)
+            {
+                produces = _context.Produces
+                    .AsNoTracking().OrderBy(x => x.Discount).ToList();
+            }
+            if (id == 2)
+            {
+                produces = _context.Produces
+                    .AsNoTracking().OrderByDescending(x => x.Discount).ToList();
+            }
+            if (id == 3)
+            {
+                produces = _context.Produces
+                    .AsNoTracking().OrderBy(x => x.Datecreate).ToList();
+            }
+            if (id == 4)
+            {
+                produces = _context.Produces
+                    .AsNoTracking().OrderByDescending(x => x.Datecreate).ToList();
+            }
+            if (id == 5)
+            {
+                produces = _context.Produces.Where(x=>x.BestSell == true)
+                    .AsNoTracking().ToList();
+            }
+            if (id == 6)
+            {
+                produces = _context.Produces.Where(x => x.Discount >= 20000 && x.Discount <=40000)
+                    .AsNoTracking().ToList();
+            }
+            ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
+            return View(produces);
+        }
         public IActionResult Filtter(int CatID = 0)
         {
             var url = $"/Produce/Index?CatID={CatID}";
@@ -59,6 +95,7 @@ namespace DATN2.Controllers
                 PagedList<Produce> models = new PagedList<Produce>(lsTinDangs, page, pageSize);
                 ViewBag.CurrentPage = page;
                 ViewBag.CurrentCat = danhmuc;
+                ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
                 return View(models);
             }
             catch
