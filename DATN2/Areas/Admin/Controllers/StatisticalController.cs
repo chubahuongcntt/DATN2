@@ -38,12 +38,12 @@ namespace DATN2.Areas.Admin.Controllers
             if(!string.IsNullOrEmpty(formDate))
             {
                 DateTime startDate = DateTime.ParseExact(formDate, "dd/MM/yyyy", null);
-                query = query.Where(x => x.CreateDate == startDate);
+                query = query.Where(x => x.CreateDate >= startDate);
             }
             if (!string.IsNullOrEmpty(toDate))
             {
                 DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
-                query = query.Where(x => x.CreateDate < endDate);
+                query = query.Where(x => x.CreateDate <= endDate);
             }
             var result = query.GroupBy(x => x.CreateDate).Select(x => new
             {
