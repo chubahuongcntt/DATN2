@@ -62,14 +62,21 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Role role)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(role);
-                await _context.SaveChangesAsync();
-                _notifyService.Success("Tạo mới thành công");
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(role);
+                    await _context.SaveChangesAsync();
+                    _notifyService.Success("Tạo mới thành công");
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(role);
             }
-            return View(role);
+            catch
+            {
+                return View(role);
+            }
         }
 
         // GET: Admin/AdminRoles/Edit/5
@@ -95,33 +102,40 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Role role)
         {
-            if (id != role.Id)
+            try
             {
-                return NotFound();
-            }
+                if (id != role.Id)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(role);
-                    await _context.SaveChangesAsync();
-                    _notifyService.Success("Cập nhật thành công");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoleExists(role.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(role);
+                        await _context.SaveChangesAsync();
+                        _notifyService.Success("Cập nhật thành công");
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!RoleExists(role.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(role);
             }
-            return View(role);
+            catch
+            {
+                return View(role);
+            }
         }
 
         // GET: Admin/AdminRoles/Delete/5

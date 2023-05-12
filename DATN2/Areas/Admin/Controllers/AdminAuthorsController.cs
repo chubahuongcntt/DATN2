@@ -111,35 +111,44 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,Story")] Author author)
         {
-            if (id != author.Id)
+            try
             {
-                return NotFound();
-            }
+                if (id != author.Id)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(author);
+                        await _context.SaveChangesAsync();
+                        _notyfService.Success("Sửa tác giả thành công");
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        _notyfService.Error("Sửa tác giả không thành công");
+                        if (!AuthorExists(author.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                _notyfService.Error(" Sửa tác giả không thành công");
+                return View(author);
+            }
+            catch
             {
-                try
-                {
-                    _context.Update(author);
-                    await _context.SaveChangesAsync();
-                    _notyfService.Success("Sửa tác giả thành công");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    _notyfService.Error("Sửa tác giả không thành công");
-                    if (!AuthorExists(author.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-
-                }
-                return RedirectToAction(nameof(Index));
+                _notyfService.Error(" Sửa tác giả không thành công");
+                return View(author);
             }
-            return View(author);
         }
 
         // GET: Admin/AdminAuthors/Delete/5

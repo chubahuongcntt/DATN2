@@ -119,42 +119,49 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ParentId,Levels,Odering,Published,Thums,Title,Cover,Alias")] Category category, Microsoft.AspNetCore.Http.IFormFile fThums)
         {
-            if (id != category.Id)
+            try
             {
-                return NotFound();
-            }
+                if (id != category.Id)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    if (fThums != null)
+                    try
                     {
-                        string extension = Path.GetExtension(fThums.FileName);
-                        string image = Utilities.SEOUrl(category.Name) + extension;
-                        category.Thums = await Utilities.UploadFile(fThums, @"category", image.ToLower());
+                        if (fThums != null)
+                        {
+                            string extension = Path.GetExtension(fThums.FileName);
+                            string image = Utilities.SEOUrl(category.Name) + extension;
+                            category.Thums = await Utilities.UploadFile(fThums, @"category", image.ToLower());
+                        }
+                        if (string.IsNullOrEmpty(category.Thums)) category.Thums = "default.jpg";
+                        category.Alias = Utilities.SEOUrl(category.Name);
+                        _context.Update(category);
+                        await _context.SaveChangesAsync();
+                        _notyfService.Success("Cập nhật thành công");
                     }
-                    if (string.IsNullOrEmpty(category.Thums)) category.Thums = "default.jpg";
-                    category.Alias = Utilities.SEOUrl(category.Name);
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                    _notyfService.Success("Cập nhật thành công");
+                    catch (DbUpdateConcurrencyException)
+                    {
+
+                        if (!CategoryExists(category.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(category);
             }
-            return View(category);
+            catch
+            {
+                return View(category);
+            }
         }
 
         // GET: Admin/AdminCategories/Delete/5

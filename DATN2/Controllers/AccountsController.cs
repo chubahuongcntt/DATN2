@@ -208,7 +208,8 @@ namespace DATN2.Controllers
             }
             catch
             {
-                return RedirectToAction("DangkyTaiKhoan", "Accounts");
+                _notyfService.Error("Thông tin đăng nhập chưa chính xác");
+                return View(customer);
             }
             return View(customer);
         }

@@ -6,17 +6,100 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .color-palette {
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
 
+    }
+
+        .color-palette.disabled {
+            text-align: center;
+            padding-right: 0;
+            display: block;
+        }
+
+    .color-palette-set {
+        margin-bottom: 15px;
+    }
+
+    .color-palette span style="font-size:18px" {
+        display: block;
+        font-size: 12px;
+    }
+
+
+    .color-palette.disabled span style="font-size:18px" {
+        display: block;
+        text-align: center;
+
+    }
+
+    .color-palette-box h4 {
+        position: absolute;
+        left: 1.25rem;
+        margin-top: .75rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
+        display: block;
+        z-index: 7;
+    }
+</style>
 <div class="page-header">
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
             <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
-            <span class="breadcrumb-item active">Danh sách đơn hàng : trang @CurrentPage</span>
+            <span style="font-size:18px" class="breadcrumb-item active">Danh sách đơn hàng : trang @CurrentPage</span style="font-size:18px">
         </nav>
     </div>
 </div>
 <div class="card">
     <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4 col-md-2">
+                <div class="color-palette-set">
+                    <div class="bg-primary color-palette"><span style="font-size:18px">Chờ xác nhận</span style="font-size:18px"></div>
+                    <div class="bg-primary disabled color-palette"><span style="font-size:18px">@ViewBag.cnx</span style="font-size:18px"></div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 col-md-2">
+                <div class="color-palette-set">
+                    <div class="bg-secondary color-palette"><span style="font-size:18px">Chờ lấy hàng</span style="font-size:18px"></div>
+                    <div class="bg-secondary disabled color-palette"><span style="font-size:18px">@ViewBag.clh</span style="font-size:18px"></div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 col-md-2">
+                <div class="color-palette-set">
+                    <div class="bg-info color-palette"><span style="font-size:18px">Đang giao</span style="font-size:18px"></div>
+                    <div class="bg-info disabled color-palette"><span style="font-size:18px">@ViewBag.dg</span style="font-size:18px"></div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 col-md-2">
+                <div class="color-palette-set">
+                    <div class="bg-success color-palette"><span style="font-size:18px">Đã giao thành công</span style="font-size:18px"></div>
+                    <div class="bg-success disabled color-palette"><span style="font-size:18px">@ViewBag.dgtc</span style="font-size:18px"></div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 col-md-2">
+                <div class="color-palette-set">
+                    <div class="bg-warning color-palette"><span style="font-size:18px">Đã hủy</span style="font-size:18px"></div>
+                    <div class="bg-warning disabled color-palette"><span style="font-size:18px">@ViewBag.dh</span style="font-size:18px"></div>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-4 col-md-2">
+                <div class="color-palette-set">
+                    <div class="bg-danger color-palette"><span style="font-size:18px">Trả hàng</span style="font-size:18px"></div>
+                    <div class="bg-danger disabled color-palette"><span style="font-size:18px">@ViewBag.th</span style="font-size:18px"></div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
@@ -39,7 +122,7 @@
                         <th>Ngày mua</th>
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
-                         <th>Tùy chọn</th>
+                        <th>Tùy chọn</th>
                     </tr>
                 </thead>
                 <tbody>

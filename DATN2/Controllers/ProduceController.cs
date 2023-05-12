@@ -66,7 +66,22 @@ namespace DATN2.Controllers
             if (id == 6)
             {
                 produces = _context.Produces.Where(x => x.Discount >= 20000 && x.Discount <=40000)
-                    .AsNoTracking().ToList();
+                    .AsNoTracking().OrderBy(x=>x.Discount).ToList();
+            }
+            if (id == 7)
+            {
+                produces = _context.Produces.Where(x => x.Discount >= 40000 && x.Discount <= 70000)
+                    .AsNoTracking().OrderBy(x => x.Discount).ToList();
+            }
+            if (id == 8)
+            {
+                produces = _context.Produces.Where(x => x.Discount >= 70000 && x.Discount <= 100000)
+                    .AsNoTracking().OrderBy(x => x.Discount).ToList();
+            }
+            if (id == 9)
+            {
+                produces = _context.Produces.Where(x => x.Discount >= 100000)
+                    .AsNoTracking().OrderBy(x => x.Discount).ToList();
             }
             ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
             return View(produces);
@@ -109,7 +124,7 @@ namespace DATN2.Controllers
         {
             try
             {
-                var Produce = _context.Produces.Include(x => x.Cat).FirstOrDefault(x => x.Id == id);
+                var Produce = _context.Produces.Include(x => x.Cat).Include(x=>x.Aut).FirstOrDefault(x => x.Id == id);
                 if (Produce == null)
                 {
                     return RedirectToAction("Index");

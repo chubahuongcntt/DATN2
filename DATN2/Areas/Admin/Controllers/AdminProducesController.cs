@@ -101,7 +101,7 @@ namespace DATN2.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock,Datecreate,Alias,NhaXB")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Create([Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock,Datecreate,Alias,NhaXb")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
             try
             {
@@ -155,47 +155,56 @@ namespace DATN2.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock,Datecreate,Alias,NhaXB")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Desciption,CatId,AutId,Price,Discount,Thumb,BestSell,HomeFlag,Active,Tag,UnitslnStock,Datecreate,Alias,NhaXb")] Produce produce, Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
-            if (id != produce.Id)
+            try
             {
-                return NotFound();
-            }
+                if (id != produce.Id)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        produce.Name = Utilities.ToTitleCase(produce.Name);
+                        if (fThumb != null)
+                        {
+                            string extension = Path.GetExtension(fThumb.FileName);
+                            string image = Utilities.SEOUrl(produce.Name) + extension;
+                            produce.Thumb = await Utilities.UploadFile(fThumb, @"produces", image.ToLower());
+                        }
+                        if (string.IsNullOrEmpty(produce.Thumb)) produce.Thumb = "default.jpg";
+                        produce.Alias = Utilities.SEOUrl(produce.Name);
+
+                        _context.Update(produce);
+                        _notyfService.Success("Cập nhật thành công");
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!ProduceExists(produce.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["AutId"] = new SelectList(_context.Authors, "Id", "Name", produce.AutId);
+                ViewData["CatId"] = new SelectList(_context.Categories, "Id", "Name", produce.CatId);
+                return View(produce);
+            }
+            catch
             {
-                try
-                {
-                    produce.Name = Utilities.ToTitleCase(produce.Name);
-                    if (fThumb != null)
-                    {
-                        string extension = Path.GetExtension(fThumb.FileName);
-                        string image = Utilities.SEOUrl(produce.Name) + extension;
-                        produce.Thumb = await Utilities.UploadFile(fThumb, @"produces", image.ToLower());
-                    }
-                    if (string.IsNullOrEmpty(produce.Thumb)) produce.Thumb = "default.jpg";
-                    produce.Alias = Utilities.SEOUrl(produce.Name);
-
-                    _context.Update(produce);
-                    _notyfService.Success("Cập nhật thành công");
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProduceExists(produce.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["AutId"] = new SelectList(_context.Authors, "Id", "Name", produce.AutId);
+                ViewData["CatId"] = new SelectList(_context.Categories, "Id", "Name", produce.CatId);
+                return View(produce);
             }
-            ViewData["AutId"] = new SelectList(_context.Authors, "Id", "Name", produce.AutId);
-            ViewData["CatId"] = new SelectList(_context.Categories, "Id", "Name", produce.CatId);
-            return View(produce);
         }
 
         // GET: Admin/AdminProduces/Delete/5

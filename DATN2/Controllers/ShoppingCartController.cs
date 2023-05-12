@@ -90,6 +90,11 @@ namespace DATN2.Controllers
                     {
                         item.amount = amount.Value;
                     }
+                    var produce = _context.Produces.SingleOrDefault(p=>p.Id == Id);
+                    if(item.amount > produce.UnitslnStock)
+                    {
+                        item.amount = (int)produce.UnitslnStock;
+                    }
                     //Luu lai session
                     HttpContext.Session.Set<List<CartItem>>("GioHang", cart);
                 }

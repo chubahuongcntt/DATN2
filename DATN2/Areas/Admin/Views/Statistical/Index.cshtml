@@ -21,11 +21,17 @@
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-4">
-            <input id="FormDate" name="FormDate" class="form-control" placeholder="Ngày bắt đầu 'DD/MM/yyyy'" />
+        @*<div class="form-group col-md-4">
+        <input id="FormDate" name="FormDate" class="form-control" placeholder="Ngày bắt đầu 'DD/MM/yyyy'" />
         </div>
         <div class="form-group col-md-4">
-            <input id="ToDate" name="ToDate" class="form-control" placeholder="Ngày bắt kết thúc 'DD/MM/yyyy'" />
+        <input id="ToDate" name="ToDate" class="form-control" placeholder="Ngày bắt kết thúc 'DD/MM/yyyy'" />
+        </div>*@
+        <div class="form-group col-md-4">
+            <input id="FormDate" name="FormDate" class="form-control" type="date" />
+        </div>
+        <div class="form-group col-md-4">
+            <input id="ToDate" name="ToDate" class="form-control" type="date" />
         </div>
         <div class="form-group col-md-4">
             <input id="filter" type="submit" value="Lọc" class="btn btn-primary" />
@@ -56,6 +62,7 @@
 
             <!-- /.card-body -->
         </div>
+        <div class="col-sm-6" id="totalMoney"></div>
     </div>
     <div class="card-footer">
         <h3 class="card-title">footter</h3>
@@ -68,70 +75,74 @@
 @section scripts{
     <script>
         $(function () {
-            
 
-            //$.ajax({
-            //    url: '/Admin/Statistical/GetStatistical',
-            //    type: 'GET',
-            //    data: { },
-            //    success: function (rs) {
-            //        $.each(rs.data, function (i, item) {
-            //            var strDate = moment(item.date).format('DD/MM/yyyy');
-            //            arrDate.push(strDate);
-            //            arrDoanhThu.push(item.doanhThu);
-            //        });
-            //        var areaChartData = {
-            //            labels: arrDate,
-            //            datasets: [
-            //                {
-            //                    label: 'Lợi nhuận',
-            //                    backgroundColor: 'rgba(60,141,188,0.9)',
-            //                    borderColor: 'rgba(60,141,188,0.8)',
-            //                    pointRadius: false,
-            //                    pointColor: '#3b8bba',
-            //                    pointStrokeColor: 'rgba(60,141,188,1)',
-            //                    pointHighlightFill: '#fff',
-            //                    pointHighlightStroke: 'rgba(60,141,188,1)',
-            //                    data: [28, 48, 40, 19, 86, 27, 90]
-            //                },
-            //                {
-            //                    label: 'Doanh thu',
-            //                    backgroundColor: 'rgba(210, 214, 222, 1)',
-            //                    borderColor: 'rgba(210, 214, 222, 1)',
-            //                    pointRadius: false,
-            //                    pointColor: 'rgba(210, 214, 222, 1)',
-            //                    pointStrokeColor: '#c1c7d1',
-            //                    pointHighlightFill: '#fff',
-            //                    pointHighlightStroke: 'rgba(220,220,220,1)',
-            //                    data: arrDoanhThu
-            //                },
-            //            ]
-            //        }
+            var total = 0;
+            var arrDoanhThu = [];
+            var arrDate = [];
+            $.ajax({
+                url: '/Admin/Statistical/GetStatistical',
+                type: 'GET',
+                data: {},
+                success: function (rs) {
+                    $.each(rs.data, function (i, item) {
+                        var strDate = moment(item.date).format('DD/MM/yyyy');
+                        arrDate.push(strDate);
+                        arrDoanhThu.push(item.doanhThu);
+                    });
+                    var areaChartData = {
+                        labels: arrDate,
+                        datasets: [
+                            {
+                                label: 'Lợi nhuận',
+                                backgroundColor: 'rgba(60,141,188,0.9)',
+                                borderColor: 'rgba(60,141,188,0.8)',
+                                pointRadius: false,
+                                pointColor: '#3b8bba',
+                                pointStrokeColor: 'rgba(60,141,188,1)',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(60,141,188,1)',
+                                data: [0, 0, 0, 0, 0, 0, 0, 0]
+                            },
+                            {
+                                label: 'Doanh thu',
+                                backgroundColor: 'rgba(210, 214, 222, 1)',
+                                borderColor: 'rgba(210, 214, 222, 1)',
+                                pointRadius: false,
+                                pointColor: 'rgba(210, 214, 222, 1)',
+                                pointStrokeColor: '#c1c7d1',
+                                pointHighlightFill: '#fff',
+                                pointHighlightStroke: 'rgba(220,220,220,1)',
+                                data: arrDoanhThu
+                            },
+                        ]
+                    }
 
-            //        //-------------
-            //        //- BAR CHART -
-            //        //-------------
-            //        var barChartCanvas = $('#barChart').get(0).getContext('2d')
-            //        var barChartData = $.extend(true, {}, areaChartData)
-            //        var temp0 = areaChartData.datasets[0]
-            //        var temp1 = areaChartData.datasets[1]
-            //        barChartData.datasets[0] = temp1
-            //        barChartData.datasets[1] = temp0
+                    //-------------
+                    //- BAR CHART -
+                    //-------------
+                    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+                    var barChartData = $.extend(true, {}, areaChartData)
+                    var temp0 = areaChartData.datasets[0]
+                    var temp1 = areaChartData.datasets[1]
+                    barChartData.datasets[0] = temp1
+                    barChartData.datasets[1] = temp0
 
-            //        var barChartOptions = {
-            //            responsive: true,
-            //            maintainAspectRatio: false,
-            //            datasetFill: false
-            //        }
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        datasetFill: false
+                    }
 
-            //        new Chart(barChartCanvas, {
-            //            type: 'bar',
-            //            data: barChartData,
-            //            options: barChartOptions
-            //        });
-            //    }
-            //});
+                    new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+                    });
+                    $("#totalMoney").html('Tổng tiền: ' + VND.format(total));
+                }
+            });
             $("#filter").click(function () {
+                var total = 0;
                 var arrDoanhThu = [];
                 var arrDate = [];
                 var FormDate = $('#FormDate').val();
@@ -145,6 +156,7 @@
                             var strDate = moment(item.date).format('DD/MM/yyyy');
                             arrDate.push(strDate);
                             arrDoanhThu.push(item.doanhThu);
+                            total += item.doanhThu;
                         });
                         var areaChartData = {
                             labels: arrDate,
@@ -195,6 +207,11 @@
                             data: barChartData,
                             options: barChartOptions
                         });
+                        const VND = new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                        });
+                        $("#totalMoney").html('Tổng tiền: ' + VND.format(total));
                     }
                 });
             });

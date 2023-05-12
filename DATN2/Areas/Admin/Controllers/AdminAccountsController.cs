@@ -70,14 +70,22 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Phone,Email,Password,Salt,Active,Name,RoleId,LastLogin,CreateDate")] Account account)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(account);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(account);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
+                return View(account);
             }
-            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
-            return View(account);
+            catch
+            {
+                ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
+                return View(account);
+            }
         }
 
         //ChangePassword
@@ -132,33 +140,41 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Phone,Email,Password,Salt,Active,Name,RoleId,LastLogin,CreateDate")] Account account)
         {
-            if (id != account.Id)
+            try
             {
-                return NotFound();
-            }
+                if (id != account.Id)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(account);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!AccountExists(account.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
+                return View(account);
             }
-            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
-            return View(account);
+            catch
+            {
+                ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "Id", "Name", account.RoleId);
+                return View(account);
+            }
         }
 
         // GET: Admin/AdminAccounts/Delete/5

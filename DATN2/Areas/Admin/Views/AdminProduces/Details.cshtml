@@ -17,25 +17,44 @@
 </div>
 
 <div class="card-body">
-    <h4 class="card-title">Thông tin sản phẩm : @Model.Name</h4>
+    <h2 class="card-title">Thông tin sản phẩm : @Model.Name</h2>
+    <br />
     <div class="table-responsive">
         <table class="product-info-table m-t-20">
             <tbody>
                 <tr>
-                    <td>Tên sản phẩm:</td>
-                    <td>@Model.Name</td>
+                    <td class="col-md-2">Tên sản phẩm:</td>
+                    <td class="col-md-10">@Model.Name</td>
                 </tr>
                 <tr>
-                    <td>Mô tả ngắn:</td>
-                    <td>@Model.Desciption</td>
+                    <td class ="col-md-2">Mô tả ngắn:</td>
+                    <td class="col-md-10">@Model.Desciption</td>
                 </tr>
                 <tr>
-                    <td>Giá:</td>
-                    <td>@Model.Price</td>
+                    <td class="col-md-2">Giá ban đầu:</td>
+                    <td class="col-md-10">@Model.Price.Value.ToString("#,##0") VND</td>
                 </tr>
                 <tr>
-                    <td>Discount:</td>
-                    <td>@Model.Discount</td>
+                    <td class="col-md-2">Giá bán:</td>
+                    <td class="col-md-10">@Model.Discount.Value.ToString("#,##0") VND</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Danh mục:</td>
+                    <td class="col-md-10">@Model.Cat.Name</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Tác giả:</td>
+                    <td class="col-md-10">@Model.Aut.Name</td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Nhà xuất bản:</td>
+                    <td class="col-md-10">@Model.NhaXb</td>
+                </tr>
+                <tr>
+                    <td>Ảnh đại diện:</td>
+                    <td>
+                        <img width="200" height="200" src="~/images/produces/@Model.Thumb" alt="" />
+                    </td>
                 </tr>
                 <tr>
                     <td>Trạng thái:</td>
@@ -93,24 +112,6 @@
                             </div>
                         }
 
-                    </td>
-                </tr>
-                <tr>
-                    <td>Danh mục:</td>
-                    <td>@Model.Cat.Name</td>
-                </tr>
-                <tr>
-                    <td>Tác giả:</td>
-                    <td>@Model.Aut.Name</td>
-                </tr>
-                <tr>
-                    <td>Nhà xuất bản:</td>
-                    <td>@Model.NhaXb</td>
-                </tr>
-                <tr>
-                    <td>Ảnh đại diện:</td>
-                    <td>
-                        <img width="200" height="200" src="~/images/produces/@Model.Thumb" alt="" />
                     </td>
                 </tr>
             </tbody>

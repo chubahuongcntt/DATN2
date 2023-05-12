@@ -51,6 +51,12 @@ namespace DATN2.Areas.Admin.ControllersS
             PagedList<Order> models = new PagedList<Order>(orders.AsQueryable(), pageNumber, pageSize);
 
             ViewBag.CurrentPage = pageNumber;
+            ViewBag.cnx = _context.Orders.Where(x => x.StatusId == 1).Count();
+            ViewBag.clh = _context.Orders.Where(x => x.StatusId == 2).Count();
+            ViewBag.dg = _context.Orders.Where(x => x.StatusId == 3).Count();
+            ViewBag.dgtc = _context.Orders.Where(x => x.StatusId == 4).Count();
+            ViewBag.dh = _context.Orders.Where(x => x.StatusId == 5).Count();
+            ViewBag.th = _context.Orders.Where(x => x.StatusId == 6).Count();
             ViewData["TrangThai"] = new SelectList(_context.TransitionStatuses, "Id", "Status");
             return View(models);
         }

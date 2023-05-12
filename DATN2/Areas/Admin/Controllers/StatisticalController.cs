@@ -21,7 +21,7 @@ namespace DATN2.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public JsonResult GetStatistical(string formDate, string toDate)
+        public JsonResult GetStatistical(DateTime formDate, DateTime toDate)
         {
             var query = from o in _context.Orders
                         join od in _context.OrderDetails
@@ -35,15 +35,18 @@ namespace DATN2.Areas.Admin.Controllers
                             Quantity = od.Quantity,
                             Price = od.Price,
                         };
-            if(!string.IsNullOrEmpty(formDate))
+            DateTime aDateTime = new DateTime(0001, 01, 01, 00, 00, 00);
+            Console.WriteLine(formDate);
+
+            if(!formDate.Equals(aDateTime))
             {
-                DateTime startDate = DateTime.ParseExact(formDate, "dd/MM/yyyy", null);
-                query = query.Where(x => x.CreateDate >= startDate);
+                //DateTime startDate = DateTime.ParseExact(formDate, "dd/MM/yyyy", null);
+                query = query.Where(x => x.CreateDate >= formDate);
             }
-            if (!string.IsNullOrEmpty(toDate))
+            if (!toDate.Equals(aDateTime))
             {
-                DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
-                query = query.Where(x => x.CreateDate <= endDate);
+                //DateTime endDate = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
+                query = query.Where(x => x.CreateDate <= toDate);
             }
             var result = query.GroupBy(x => x.CreateDate).Select(x => new
             {
