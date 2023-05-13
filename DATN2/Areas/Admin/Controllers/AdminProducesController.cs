@@ -47,18 +47,15 @@ namespace DATN2.Areas.Admin.Controllers
                 .Include(x => x.Cat)
                 .OrderBy(x => x.Name).ToList();
             }
-
-
-
             PagedList<Produce> models = new PagedList<Produce>(lsproduces.AsQueryable(), pageNumber, pageSize);
             ViewBag.CurrentCateID = CatID;
-
             ViewBag.CurrentPage = pageNumber;
-
             ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
-
+            ViewBag.TongSL = _context.Produces.Sum(x => x.UnitslnStock);
+            ViewBag.TongSLDB = _context.OrderDetails.Sum(x => x.Quantity);
             return View(models);
         }
+
         public IActionResult Filtter(int CatID = 0)
         {
             var url = $"/Admin/AdminProduces/Index?CatID={CatID}";
@@ -232,19 +229,27 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Produces == null)
+            try
             {
-                return Problem("Entity set 'BookStore2Context.Produces'  is null.");
+                if (_context.Produces == null)
+                {
+                    return Problem("Entity set 'BookStore2Context.Produces'  is null.");
+                }
+                var produce = await _context.Produces.FindAsync(id);
+                if (produce != null)
+                {
+                    _context.Produces.Remove(produce);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xóa thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var produce = await _context.Produces.FindAsync(id);
-            if (produce != null)
+            catch
             {
-                _context.Produces.Remove(produce);
+                _notyfService.Error("Sách đã có trong đơn hàng xóa không thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            _notyfService.Success("Xóa thành công");
-            return RedirectToAction(nameof(Index));
         }
 
         private bool ProduceExists(int id)

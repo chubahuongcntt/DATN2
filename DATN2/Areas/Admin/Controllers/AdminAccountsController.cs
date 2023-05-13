@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DATN2.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminAccountsController : Controller
     {
         private readonly BookStore2Context _context;

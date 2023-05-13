@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using PagedList.Core;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace DATN2.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminCustomersController : Controller
     {
         private readonly BookStore2Context _context;
@@ -35,7 +36,19 @@ namespace DATN2.Areas.Admin.Controllers
             ViewBag.CurrentPage = pageNumber;
             return View(models);
         }
-
+        public IActionResult lockhachhang()
+        {
+            var query = from c in _context.Customers
+                        join o in _context.Orders
+                        on c.Id equals o.CustomerId
+                        where (o.StatusId == 5)
+                        select (c);
+            List<Order> orders = _context.Orders
+                .Include(p => p.Customer)
+                .Where(p=>p.StatusId == 5)
+                .ToList();
+            return View(orders);
+        }
         // GET: Admin/AdminCustomers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -150,18 +163,25 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Customers == null)
+            try
             {
-                return Problem("Entity set 'BookStore2Context.Customers'  is null.");
+                if (_context.Customers == null)
+                {
+                    return Problem("Entity set 'BookStore2Context.Customers'  is null.");
+                }
+                var customer = await _context.Customers.FindAsync(id);
+                if (customer != null)
+                {
+                    _context.Customers.Remove(customer);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
+            catch
             {
-                _context.Customers.Remove(customer);
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)

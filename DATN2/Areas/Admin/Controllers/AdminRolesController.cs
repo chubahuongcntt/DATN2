@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using DATN2.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
+using AspNetCoreHero.ToastNotification.Notyf;
 
 namespace DATN2.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminRolesController : Controller
     {
         private readonly BookStore2Context _context;
@@ -161,19 +162,27 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Roles == null)
+            try
             {
-                return Problem("Entity set 'BookStore2Context.Roles'  is null.");
+                if (_context.Roles == null)
+                {
+                    return Problem("Entity set 'BookStore2Context.Roles'  is null.");
+                }
+                var role = await _context.Roles.FindAsync(id);
+                if (role != null)
+                {
+                    _context.Roles.Remove(role);
+                }
+
+                await _context.SaveChangesAsync();
+                _notifyService.Success("Xóa quyền truy cập thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var role = await _context.Roles.FindAsync(id);
-            if (role != null)
+            catch
             {
-                _context.Roles.Remove(role);
+                _notifyService.Error("Xóa quyền truy cập không thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            _notifyService.Success("Xóa quyền truy cập thành công");
-            return RedirectToAction(nameof(Index));
         }
 
         private bool RoleExists(int id)

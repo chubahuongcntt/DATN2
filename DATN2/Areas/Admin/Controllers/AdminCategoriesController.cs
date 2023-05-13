@@ -187,19 +187,27 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Categories == null)
+            try
             {
-                return Problem("Entity set 'BookStore2Context.Categories'  is null.");
+                if (_context.Categories == null)
+                {
+                    return Problem("Entity set 'BookStore2Context.Categories'  is null.");
+                }
+                var category = await _context.Categories.FindAsync(id);
+                if (category != null)
+                {
+                    _context.Categories.Remove(category);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xóa thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+            catch
             {
-                _context.Categories.Remove(category);
+                _notyfService.Error("danh mục đã được sử dụng xóa không thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            _notyfService.Success("Xóa thành công");
-            return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)

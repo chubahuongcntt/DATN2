@@ -174,19 +174,27 @@ namespace DATN2.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Authors == null)
+            try
             {
-                return Problem("Entity set 'BookStore2Context.Authors'  is null.");
+                if (_context.Authors == null)
+                {
+                    return Problem("Entity set 'BookStore2Context.Authors'  is null.");
+                }
+                var author = await _context.Authors.FindAsync(id);
+                if (author != null)
+                {
+                    _context.Authors.Remove(author);
+                }
+
+                await _context.SaveChangesAsync();
+                _notyfService.Success("Xóa tác giả thành công");
+                return RedirectToAction(nameof(Index));
             }
-            var author = await _context.Authors.FindAsync(id);
-            if (author != null)
+            catch
             {
-                _context.Authors.Remove(author);
+                _notyfService.Error("Tác giả đã được sử dụng xóa không thành công");
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            _notyfService.Success("Xóa tác giả thành công");
-            return RedirectToAction(nameof(Index));
         }
 
         private bool AuthorExists(int id)
