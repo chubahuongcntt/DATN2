@@ -38,11 +38,6 @@ namespace DATN2.Areas.Admin.Controllers
         }
         public IActionResult lockhachhang()
         {
-            var query = from c in _context.Customers
-                        join o in _context.Orders
-                        on c.Id equals o.CustomerId
-                        where (o.StatusId == 5)
-                        select (c);
             List<Order> orders = _context.Orders
                 .Include(p => p.Customer)
                 .Where(p=>p.StatusId == 5)

@@ -3,6 +3,7 @@
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Produce> allProduct = ViewBag.AllProducts;
+    List<Produce> ProduceBestSeller = ViewBag.BestSell;
 }
 
 <!-- Begin Slider Area -->
@@ -22,7 +23,7 @@
                                     <a class="btn btn-custom-size lg-size btn-primary btn-white-hover rounded-0" asp-controller="Produce" asp-action="Index">Mua ngay</a>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -128,6 +129,47 @@
 <div class="product-area section-space-top-100">
     <div class="container">
         <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav product-tab-nav pb-10" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                            <div class="product-tab-icon">
+                                <img src="/assets/images/product/icon/1.png" alt="Product Icon">
+                            </div>
+                            Sản phẩm bán chạy nhất
+                    </li>
+                </ul>
+                <div>
+                    @foreach (var item in ProduceBestSeller)
+                    {
+                        string url = $"/{item.Alias}-{item.Id}.html";
+                        <div class="col-xl-3 col-lg-4 col-sm-6" style="float:left; width:280px; height:350px">
+                            <div class="product-item">
+                                <div class="product-img img-zoom-effect">
+                                    <a href="@url">
+                                        <img style="width:170px; height:220px; margin-left: 40px;" class="img-full" src="~/images/produces/@item.Thumb" alt="@item.Alias">
+                                    </a>
+                                    <div class="product-add-action">
+                                        <ul>
+                                            <li>
+                                                <a href="cart.html">
+                                                    <i class="pe-7s-cart"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <a class="product-name" href="@url">@item.Name</a>
+                                    <div class="price-box pb-1">
+                                        <span class="new-price text-danger">@item.Discount VNĐ</span>
+                                        <span class="old-price text-primary">@item.Price VNĐ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
             <div class="col-lg-12">
                 <ul class="nav product-tab-nav pb-10" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">

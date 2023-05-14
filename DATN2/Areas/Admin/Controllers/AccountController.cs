@@ -51,8 +51,13 @@ namespace DATN2.Areas.Admin.Controllers
                     {
                         return View(model);
                     }
-                    string pass = (model.Password.Trim());
+                    //string pass = model.Password.Trim();
+                    string pass = (model.Password + kh.Salt.Trim()).ToMD5();
                     // + kh.Salt.Trim()
+                    if(kh.Active == false)
+                    {
+                        return View(model);
+                    }
                     if (kh.Password.Trim() != pass)
                     {
                         return View(model);

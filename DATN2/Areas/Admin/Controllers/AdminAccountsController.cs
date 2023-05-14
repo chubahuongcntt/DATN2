@@ -10,6 +10,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using DATN2.Areas.Admin.Models;
 using DATN2.Extension;
 using Microsoft.AspNetCore.Authorization;
+using DATN2.Helpper;
 
 namespace DATN2.Areas.Admin.Controllers
 {
@@ -74,6 +75,14 @@ namespace DATN2.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var mail = _context.Accounts.FirstOrDefault(x=>x.Email== account.Email);
+                    if(mail != null) 
+                    {
+                        _notyfService.Error("Email đã tồn tại");
+                        return View(account);
+                    }
+                    account.Salt = Utilities.GetRandomKey();
+                    account.Password = (account.Password + account.Salt.Trim()).ToMD5();
                     _context.Add(account);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -95,26 +104,6 @@ namespace DATN2.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var taikhoan = _context.Accounts.AsNoTracking().SingleOrDefault(x => x.Email == model.Email);
-                if (taikhoan == null) return RedirectToAction("Login", "Accounts");
-                var pass = (model.PasswordNow.Trim() + taikhoan.Salt.Trim()).ToMD5();
-                {
-                    string passnew = (model.Password.Trim() + taikhoan.Salt.Trim()).ToMD5();
-                    taikhoan.Password = passnew;
-                    taikhoan.LastLogin = DateTime.Now;
-                    _context.Update(taikhoan);
-                    _context.SaveChanges();
-                    _notyfService.Success("Đổi mật khẩu thành công");
-                    return RedirectToAction("Login", "Accounts", new { Area = "Admin" });
-                }
-            }
-            return View();
-        }
 
         // GET: Admin/AdminAccounts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -151,6 +140,9 @@ namespace DATN2.Areas.Admin.Controllers
                 {
                     try
                     {
+                        Console.WriteLine(account.Password);
+                        Console.WriteLine(account.Salt);
+                        account.Password = (account.Password.Trim() + account.Salt.Trim()).ToMD5();
                         _context.Update(account);
                         await _context.SaveChangesAsync();
                     }
@@ -212,6 +204,7 @@ namespace DATN2.Areas.Admin.Controllers
             }
             
             await _context.SaveChangesAsync();
+            _notyfService.Success("Xóa thành công");
             return RedirectToAction(nameof(Index));
         }
 

@@ -19,17 +19,17 @@ namespace DATN2.Controllers
             List<Produce> produces = new List<Produce>();
             if (searchText != null && searchText != "")
             {
-                produces = _context.Produces.Where(x => x.Name.Contains(searchText))
+                produces = _context.Produces.Where(x => x.Name.Contains(searchText) && x.UnitslnStock > 0)
                     .AsNoTracking().OrderByDescending(x => x.Datecreate).ToList();
             }
             else
             {
-                produces = _context.Produces.AsNoTracking()
+                produces = _context.Produces.AsNoTracking().Where(x=> x.UnitslnStock > 0)
                     .OrderByDescending(x => x.Datecreate).ToList();
             }
             if(CatID != 0)
             {
-                produces = _context.Produces.Where(x => x.CatId == CatID)
+                produces = _context.Produces.Where(x => x.CatId == CatID && x.UnitslnStock > 0)
                     .AsNoTracking().OrderByDescending(x => x.Datecreate).ToList();
             }
             ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");
@@ -40,47 +40,47 @@ namespace DATN2.Controllers
             List<Produce> produces = new List<Produce>();
             if (id == 1)
             {
-                produces = _context.Produces
+                produces = _context.Produces.Where(x => x.UnitslnStock > 0)
                     .AsNoTracking().OrderBy(x => x.Discount).ToList();
             }
             if (id == 2)
             {
-                produces = _context.Produces
+                produces = _context.Produces.Where(x => x.UnitslnStock > 0)
                     .AsNoTracking().OrderByDescending(x => x.Discount).ToList();
             }
             if (id == 3)
             {
-                produces = _context.Produces
+                produces = _context.Produces.Where(x => x.UnitslnStock > 0)
                     .AsNoTracking().OrderBy(x => x.Datecreate).ToList();
             }
             if (id == 4)
             {
-                produces = _context.Produces
+                produces = _context.Produces.Where(x => x.UnitslnStock > 0)
                     .AsNoTracking().OrderByDescending(x => x.Datecreate).ToList();
             }
             if (id == 5)
             {
-                produces = _context.Produces.Where(x=>x.BestSell == true)
+                produces = _context.Produces.Where(x=>x.BestSell == true && x.UnitslnStock > 0)
                     .AsNoTracking().ToList();
             }
             if (id == 6)
             {
-                produces = _context.Produces.Where(x => x.Discount >= 20000 && x.Discount <=40000)
+                produces = _context.Produces.Where(x => x.Discount >= 20000 && x.Discount <= 40000 && x.UnitslnStock > 0)
                     .AsNoTracking().OrderBy(x=>x.Discount).ToList();
             }
             if (id == 7)
             {
-                produces = _context.Produces.Where(x => x.Discount >= 40000 && x.Discount <= 70000)
+                produces = _context.Produces.Where(x => x.Discount >= 40000 && x.Discount <= 70000 && x.UnitslnStock > 0)
                     .AsNoTracking().OrderBy(x => x.Discount).ToList();
             }
             if (id == 8)
             {
-                produces = _context.Produces.Where(x => x.Discount >= 70000 && x.Discount <= 100000)
+                produces = _context.Produces.Where(x => x.Discount >= 70000 && x.Discount <= 100000 && x.UnitslnStock > 0)
                     .AsNoTracking().OrderBy(x => x.Discount).ToList();
             }
             if (id == 9)
             {
-                produces = _context.Produces.Where(x => x.Discount >= 100000)
+                produces = _context.Produces.Where(x => x.Discount >= 100000 && x.UnitslnStock > 0)
                     .AsNoTracking().OrderBy(x => x.Discount).ToList();
             }
             ViewData["DanhMuc"] = new SelectList(_context.Categories, "Id", "Name");

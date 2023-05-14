@@ -36,8 +36,6 @@
                     <th>STT</th>
                     <th>Tên danh mục</th>
                     <th>Mô tả</th>
-                    @*<th>Sắp xếp</th>
-                    <th>Trạng tháí</th>*@
                     <th>Tùy chọn</th>
                 </tr>
             </thead>
@@ -58,8 +56,6 @@
                                 </div>
                             </td>
                             <td>@item.Description</td>
-                            @*<td>@item.Odering</td>
-                            <th>@item.Published</th>*@
                             <td>
                                 <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminCategories" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
                                 <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminCategories" asp-action="Edit" asp-route-id="@item.Id">Sửa</a>

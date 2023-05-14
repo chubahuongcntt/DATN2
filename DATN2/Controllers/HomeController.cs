@@ -21,7 +21,7 @@ namespace DATN2.Controllers
             HomeViewVM model = new HomeViewVM();
 
             var lsProduces = _context.Produces.AsNoTracking()
-                .Where(x => x.Active == true && x.HomeFlag == true)
+                .Where(x => x.Active == true && x.HomeFlag == true && x.UnitslnStock>0)
                 .OrderByDescending(x => x.Name)
                 .ToList();
 
@@ -41,6 +41,10 @@ namespace DATN2.Controllers
                 model.Produces = lsProductViews;
                 ViewBag.AllProducts = lsProduces;
             }
+            var ProduceBestSeller = _context.Produces
+                .Where(x=>x.BestSell==true && x.UnitslnStock > 0)
+                .ToList();
+            ViewBag.BestSell = ProduceBestSeller;
             return View(model);
         }
 
